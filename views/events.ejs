@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events — Nikkilog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <%- include('partials/meta', { metaTitle: "Events — Nikkilog", metaDescription: "Watch-alongs, contests and community happenings on Nikkilog." }) %>
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+
+    <%- include('partials/topbar', { active: 'events' }) %>
+
+    <main class="content-area">
+        <div class="content-inner">
+            <header class="page-head">
+                <span class="eyebrow">Airing calendar</span>
+                <h1 class="headline-lg">Events</h1>
+                <p class="muted">Watch-alongs, contests and community happenings.</p>
+            </header>
+
+            <section class="section" id="allEventsSection" hidden>
+                <div class="events-grid" id="allEventsGrid"></div>
+            </section>
+
+            <div class="empty-state" id="noEvents">
+                <span class="material-symbols-outlined">event_busy</span>
+                <p>No events are scheduled right now.</p>
+                <p class="muted">Check back soon — or follow along on the home page.</p>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/promos.js" defer></script>
+</body>
+</html>

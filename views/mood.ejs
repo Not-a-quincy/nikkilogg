@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= mood.label %> anime — Nikkilog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <%- include('partials/meta', { metaTitle: metaTitle, metaDescription: metaDescription, jsonLd: jsonLd }) %>
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+    <%- include('partials/topbar', { active: 'browse' }) %>
+
+    <main class="content-area">
+        <div class="content-inner">
+            <nav class="mood-crumbs">
+                <a href="/browse?category=all">Browse</a>
+                <span>/</span>
+                <span>By mood</span>
+            </nav>
+
+            <header class="page-head">
+                <span class="eyebrow">Anime by feeling</span>
+                <h1 class="headline-lg"><%= mood.label %> anime</h1>
+                <p class="muted"><%= mood.blurb %></p>
+                <p class="muted mood-source">
+                    Ranked by what viewers logged on Nikkilog — not by score, and not copied from anywhere.
+                </p>
+            </header>
+
+            <nav class="mood-picker" aria-label="Other moods">
+                <% moods.forEach(function (m) { %>
+                    <a href="/mood/<%= m.slug %>" class="mood-chip <%= m.slug === mood.slug ? 'is-active' : '' %>"><%= m.label %></a>
+                <% }); %>
+            </nav>
+
+            <% if (list.length) { %>
+            <div class="mood-grid">
+                <% list.forEach(function (a) { %>
+                <a class="mood-card" href="/anime/<%= a.mal_id %>">
+                    <img src="<%= a.poster || '' %>" alt="<%= a.title %>" loading="lazy">
+                    <div class="mood-card-body">
+                        <h2 class="mood-card-title"><%= a.title %></h2>
+                        <p class="mood-card-meta">
+                            <%= a.year || '' %><% if (a.rating) { %> · ★ <%= Number(a.rating).toFixed(2) %><% } %>
+                        </p>
+                        <p class="mood-card-votes"><%= a.votes %> <%= a.votes === 1 ? 'person says' : 'people say' %> <%= mood.label.toLowerCase() %></p>
+                    </div>
+                </a>
+                <% }); %>
+            </div>
+            <% } else { %>
+            <div class="empty-state">
+                <span class="material-symbols-outlined">mood</span>
+                <p>Nobody has logged a <%= mood.label.toLowerCase() %> mood yet.</p>
+                <p class="muted">Open any anime and tap how it felt — this list fills up from there.</p>
+            </div>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/promos.js" defer></script>
+</body>
+</html>

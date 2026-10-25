@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy — Nikkilog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <%- include('partials/meta', { metaTitle: 'Privacy — Nikkilog', metaDescription: 'What Nikkilog stores, why, and what it does not do with it. No ads, no trackers, no data sales.' }) %>
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+    <%- include('partials/topbar', { active: '' }) %>
+
+    <main class="content-area">
+        <article class="content-inner prose">
+            <header class="page-head">
+                <span class="eyebrow">Privacy</span>
+                <h1 class="headline-lg">What is stored, and what is not</h1>
+            </header>
+
+            <p class="prose-lead">
+                The short version: this site stores what it needs to work, keeps nothing else, and sells
+                nothing to anyone. No advertising, no analytics, no third-party trackers.
+            </p>
+
+            <h2>What is stored</h2>
+            <ul>
+                <li><strong>Your email address</strong> — it is your login.</li>
+                <li><strong>A hashed password.</strong> The password itself is never stored. It is scrambled with scrypt, and the original cannot be recovered from what is kept, including by the person running this site.</li>
+                <li><strong>Your display name</strong>, and a profile picture or banner if you upload one.</li>
+                <li><strong>Your list:</strong> what you have watched, your progress, scores, moods and private notes.</li>
+                <li><strong>Your mood votes</strong> — the one-tap answers to "how did this feel?". These are shown in aggregate to everyone.</li>
+                <li><strong>Anything you post publicly</strong>, such as a review or a comment.</li>
+                <li><strong>Server logs</strong>, which may include IP addresses, kept by the hosting provider for security and troubleshooting.</li>
+            </ul>
+
+            <h2>What is not done with it</h2>
+            <ul>
+                <li>No advertising, and no ad networks.</li>
+                <li>No analytics or tracking scripts of any kind.</li>
+                <li>No selling, renting or sharing your data with anyone.</li>
+                <li>No profiling, and no feeding it to third-party AI services.</li>
+                <li>No email beyond what you ask for — there is no newsletter.</li>
+            </ul>
+
+            <h2>Cookies</h2>
+            <p>
+                One cookie, and it is strictly necessary: a session cookie that remembers you are logged
+                in. It is <code>httpOnly</code> (not readable by scripts) and <code>SameSite=Lax</code>
+                (not sent on cross-site requests). There are no advertising or analytics cookies, so
+                there is no cookie banner, because there is nothing to consent to.
+            </p>
+
+            <h2>Your control over it</h2>
+            <ul>
+                <li><strong>Edit anything</strong> — your profile, your list, your moods and notes — at any time.</li>
+                <li><strong>Delete your reviews and comments</strong> yourself.</li>
+                <li><strong>Delete your account and everything in it</strong> by asking. It is removed, not hidden.</li>
+            </ul>
+
+            <h2>Where it lives</h2>
+            <p>
+                The database runs on a single self-hosted server. It is not spread across third-party
+                services, and no one else has access to it.
+            </p>
+
+            <h2>Children</h2>
+            <p>
+                This site is not intended for children under 13, and accounts for them are not knowingly
+                created.
+            </p>
+
+            <h2 id="contact">Contact</h2>
+            <% if (contact) { %>
+            <p>
+                Questions about any of this, or a request to delete your data: send a direct message to
+                <a href="<%= contact.url %>" rel="me noopener" target="_blank"><%= contact.display %></a> on <%= contact.network %>.
+            </p>
+            <% } else { %>
+            <p class="muted">No contact details have been configured for this instance yet.</p>
+            <% } %>
+            <p class="muted">
+                This describes what the software actually does, written to be readable. It is not legal
+                advice, and a site that collects personal data in the open may have obligations under
+                laws such as India's Digital Personal Data Protection Act or the GDPR. See DEPLOY.md.
+            </p>
+        </article>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/promos.js" defer></script>
+</body>
+</html>

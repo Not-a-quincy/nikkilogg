@@ -1,0 +1,20 @@
+node_modules/
+.env
+login.env
+public/uploads/*
+!public/uploads/.gitkeep
+npm-debug.log*
+.sessions/
+
+# test artefacts
+tests/.output/
+
+# editors / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# misc
+*.log
+coverage/

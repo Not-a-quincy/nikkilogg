@@ -1,0 +1,229 @@
+<!--Browse.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/browse.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Browse Anime</title>
+    <%- include('partials/meta', { metaTitle: "Browse anime — Nikkilog", metaDescription: "Filter thousands of series by genre, season, year and rating.", }) %>
+    <script>window.isLoggedIn = "<%= isLoggedIn ? 'true' : 'false' %>";</script>
+</head>
+<body class="main-body">
+
+    <%- include('partials/announcement') %>
+
+    <%- include('partials/topbar', { active: 'browse' }) %>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay-container" id="searchOverlay">
+        <div class="search">
+            <input type="search" placeholder="Search anime..." data-search id="searchInput" aria-label="Search anime">
+        </div>
+        <div class="search-results" id="searchResults">
+            <!-- Dynamic search results go here -->
+        </div>
+    </div>
+
+    <!-- Filter Overlay (for mobile/small screens) -->
+    <div class="filter-overlay">
+        <div class="filter-panel">
+            <header class="filter-head">
+                <h2 class="filter-title">Filter Anime</h2>
+                <button class="close-filter" type="button" aria-label="Close filters"><i class="material-symbols-outlined">close</i></button>
+            </header>
+            <div class="filter-body">
+                <p class="filter-hint">
+                    <span class="material-symbols-outlined">info</span>
+                    Tap a tag once to require it, twice to exclude it.
+                </p>
+
+            <div class="filter-section">
+                <p>Genres</p>
+                <div class="tag-grid genres-group">
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="1">Action</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="2">Adventure</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="5">Avant Garde</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="46">Award Winning</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="28">Boys Love</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="4">Comedy</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="8">Drama</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="10">Fantasy</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="26">Girls Love</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="47">Gourmet</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="14">Horror</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="7">Mystery</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="22">Romance</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="24">Sci-Fi</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="36">Slice of Life</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="30">Sports</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="37">Supernatural</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="41">Suspense</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <p>Themes</p>
+                <div class="tag-grid themes-group">
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="50">Adult Cast</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="51">Anthropomorphic</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="52">CGDCT</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="53">Childcare</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="54">Combat Sport</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="81">Crossdressing</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="55">Delinquents</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="39">Detective</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="56">Educational</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="57">Gag Humor</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="58">Gore</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="35">Harem</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="59">High Stakes Game</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="13">Historical</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="60">Idols(Female)</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="61">Idols(Male)</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="62">Isekai</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="63">Iyashikei</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="64">Love Polygon</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="74">Love Status Quo</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="65">Magical Sex Shift</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="66">Mahou Shoujo</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="17">Martial Arts</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="18">Mecha</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="67">Medical</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="38">Military</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="19">Music</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="6">Mythology</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="68">Organized Crime</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="69">Otaku Culture</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="20">Parody</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="70">Performing Arts</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="71">Pets</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="40">Psychological</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="3">Racing</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="72">Reincarnation</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="73">Reverse Harem</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="21">Samurai</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="23">School</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="75">Showbiz</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="29">Space</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="11">Strategy game</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="31">Super Power</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="76">Survival</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="77">Team Sports</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="78">Time Travel</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="82">Urban Fantasy</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="32">Vampire</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="79">Video Game</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="83">Villainess</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="80">Visual Arts</label>
+                    <label><input class="tag-checkbox" data-state="0" type="checkbox" value="48">Workplace</label>
+                </div>
+           </div>
+            </div>
+            <div class="apply_clear_btn">
+                <button class="clear-filters"><i class="material-symbols-outlined">delete</i><span class="btn-label">Clear All</span></button>
+                <button class="apply-filters"><i class="material-symbols-outlined">check</i><span class="btn-label">Apply</span></button>
+           </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area: Contains Sort/Filter and Anime Grid -->
+    <main class="content-area">
+        <!-- Sort and Filter Controls Container -->
+        <div id="anime-sort">
+
+            <select id="type-sort">
+                <option value="">All Types</option>
+                <option value="tv">TV</option>
+                <option value="movie">Movie</option>
+                <option value="ova">OVA</option>
+                <option value="ona">ONA</option>
+                <option value="special">Special</option>
+            </select>
+
+            <select id="status-sort">
+                <option value="">All Status</option>
+                <option value="Currently Airing">Airing</option>
+                <option value="Finished Airing">Completed</option>
+                <option value="Not yet aired">Upcoming</option>
+            </select>
+
+            <select id="year-select">
+                <option value="">All Year</option>
+            </select>
+            <select id="season-select">
+                <option value="">All Seasons</option>
+                <option value="winter">Winter</option>
+                <option value="spring">Spring</option>
+                <option value="summer">Summer</option>
+                <option value="fall">Fall</option>
+            </select>
+
+            <select id="sortBy">
+                <option value="popularity">Popularity</option>
+                <option value="average_rating">Rating</option>
+                <option value="members">Members</option>
+                <option value="favorites">Favorites</option>
+            </select>
+
+            <button class="filter-btn"><i class="material-symbols-outlined">tune</i>Filter<span class="filter-count" id="filterCount" hidden></span></button>
+
+        </div>
+
+
+         <div id="no-anime-message"></div>
+         
+        <!-- Dynamic Anime Grid Container -->
+        <div id="dynamic_anime_grid">
+
+            <!-- <div class="anime_card">
+
+                <section class="top-section">
+                  <div class="title-en">
+                    <p class="title_en_p">
+                       <sup class="type"></sup>
+                    </p>
+                  </div>    
+                  <div class="genre">
+                    <span class="genre-tag"></span>
+                  </div>
+                </section>
+                <section class="middle-section">
+                  <div class="image_div">
+                    <a class="middle_image_anchor">
+                      <img class="middle_image">
+                    </a>
+                  </div>    
+                  <div class="synopsis_and_misc">
+                    <div class="synopsis_div">
+                      <p class="synopsis_p">
+                      </p>
+                    </div>
+                    <div class="misc_div">
+                      <span class="year"></span>
+                      <span class="status"></span>
+                    </div>
+                  </div>
+                </section>
+            </div> -->
+
+        </div>
+
+    </main>
+    
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/cards.js" defer></script>
+    <script src="/js/browse.js"></script>
+    <%- include('partials/footer') %>
+    <script src="/js/promos.js" defer></script>
+</body>
+</html>

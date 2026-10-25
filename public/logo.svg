@@ -1,0 +1,8 @@
+<svg height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-labelledby="logoTitle logoDesc" role="img">
+  <title id="logoTitle">Nikkilog Logo</title>
+  <desc id="logoDesc">The word Nikkilog with the Japanese subtitle 日記ログ and an orange circle, on a light background</desc>
+  <rect width="200" height="60" fill="none"/>
+  <text x="10" y="30" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="24" fill="#171A22">Nikkilog</text>
+  <text x="10" y="52" font-family="'Noto Sans JP', sans-serif" font-weight="400" font-size="16" fill="#6B7280">日記ログ</text>
+  <circle cx="170" cy="30" r="5" fill="#FF5733"/>
+</svg>

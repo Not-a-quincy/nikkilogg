@@ -1,0 +1,43 @@
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="topbar-left">
+            <%- include('brand') %>
+            <nav class="topnav" id="topnav">
+                <a href="/" class="topnav-link <%= locals.active === 'discover' ? 'active' : '' %>">Discover</a>
+                <a href="/browse?category=all" class="topnav-link <%= locals.active === 'browse' ? 'active' : '' %>">Browse</a>
+                <a href="/profile" class="topnav-link <%= locals.active === 'list' ? 'active' : '' %>">My List</a>
+                <a href="/events" class="topnav-link <%= locals.active === 'events' ? 'active' : '' %>">Events</a>
+                <% if (currentUser && currentUser.is_admin) { %>
+                <a href="/admin/promos" class="topnav-link <%= locals.active === 'admin' ? 'active' : '' %>">Admin</a>
+                <% } %>
+            </nav>
+        </div>
+
+        <button class="topbar-search" id="topbarSearchBtn" type="button" aria-label="Search anime">
+            <span class="material-symbols-outlined">search</span>
+            <span>Search anime, genres, or a quiet mood…</span>
+        </button>
+
+        <div class="topbar-actions">
+            <button class="topbar-menu-btn" id="topbarMenuBtn" type="button" aria-label="Menu" aria-expanded="false">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <% if (currentUser) { %>
+            <a href="/settings" class="topbar-icon-btn" aria-label="Settings" title="Settings">
+                <span class="material-symbols-outlined">settings</span>
+            </a>
+            <a href="/profile" class="avatar-btn" aria-label="Your profile">
+                <img src="<%= currentUser.profile_pic || '/default-profile.png' %>" alt="Your profile">
+            </a>
+            <% } else { %>
+            <a href="/login" class="btn btn-primary">Log in</a>
+            <% } %>
+        </div>
+    </div>
+</header>
+
+<!-- Compatibility hooks: the older page scripts still query these elements.
+     They are inert here (the top bar replaces the old side menu). -->
+<span id="search-button" class="hidden" aria-hidden="true"></span>
+<div class="ham-menu hidden" aria-hidden="true"><div class="ham-menu-icon"><i></i><i></i></div></div>
+<nav class="vertical-nav hidden" aria-hidden="true"></nav>

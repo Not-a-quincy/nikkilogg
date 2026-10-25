@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Nikkilog">
+  <!-- A square version of the logo: the wordmark's initial, with the orange dot
+       from the full lockup. The 200x60 lockup cannot be read at 16px. -->
+  <rect width="64" height="64" rx="14" fill="#171A22"/>
+  <text x="30" y="45" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="36" fill="#E0E0E0" text-anchor="middle">N</text>
+  <circle cx="48" cy="18" r="6" fill="#FF5733"/>
+</svg>

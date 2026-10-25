@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import from MyAnimeList — Nikkilog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <%- include('partials/meta', { metaTitle: 'Import from MyAnimeList — Nikkilog', metaNoIndex: true }) %>
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+    <%- include('partials/topbar', { active: 'list' }) %>
+
+    <main class="content-area">
+        <div class="content-inner import-wrap">
+            <header class="page-head">
+                <span class="eyebrow">Bring your list with you</span>
+                <h1 class="headline-lg">Import from MyAnimeList</h1>
+                <p class="muted">
+                    Your ratings, your progress and your statuses come across. Nothing is written
+                    until you have seen exactly what will happen.
+                </p>
+            </header>
+
+            <section class="card import-card">
+                <h2 class="headline-sm">How to get your file</h2>
+                <ol class="import-steps">
+                    <li>Sign in to MyAnimeList and open your <strong>Anime List</strong>.</li>
+                    <li>Use <strong>Export</strong> (near the top of the list) to download your list.</li>
+                    <li>You get an <code>.xml</code> file. Drop it below. A <code>.csv</code> export works too.</li>
+                </ol>
+
+                <label class="import-drop" id="dropZone">
+                    <input type="file" id="fileInput" accept=".xml,.csv,text/xml,text/csv" hidden>
+                    <span class="material-symbols-outlined">upload_file</span>
+                    <span id="dropLabel">Choose your export file, or drop it here</span>
+                </label>
+
+                <div id="status" class="import-status" hidden></div>
+            </section>
+
+            <section class="card import-card" id="previewPanel" hidden>
+                <h2 class="headline-sm">Here is what will happen</h2>
+                <div id="previewBody"></div>
+                <div class="import-actions">
+                    <button class="btn btn-primary" id="applyBtn" type="button">Import these</button>
+                    <button class="btn-mini" id="cancelBtn" type="button">Cancel</button>
+                </div>
+            </section>
+
+            <section class="card import-card" id="donePanel" hidden>
+                <h2 class="headline-sm" id="doneTitle">Imported</h2>
+                <div id="doneBody"></div>
+                <a class="btn btn-primary" href="/profile">Go to my list</a>
+            </section>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/promos.js" defer></script>
+    <script src="/js/import.js" defer></script>
+</body>
+</html>

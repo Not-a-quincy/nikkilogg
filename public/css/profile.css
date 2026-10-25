@@ -1,0 +1,434 @@
+/* ==========================================================================
+   Nikkilog — Profile page
+   ========================================================================== */
+
+.main-body {
+  padding: var(--s6) var(--s6) var(--s8);
+}
+
+/* --- Profile header card --- */
+.profile-details {
+  padding: calc(var(--topbar-h) + var(--s5)) var(--s6) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+}
+.profile-header { display: flex; align-items: center; gap: var(--s4); }
+.avatar-wrapper { flex: none; display: flex; align-items: center; gap: var(--s4); }
+.avatar-img {
+  width: 88px;
+  height: 88px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 3px solid var(--surface);
+  box-shadow: var(--shadow);
+}
+.username {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--title);
+}
+.username #filled-icon { color: #f0a020; font-size: 20px; }
+
+.edit-profile { margin-left: auto; }
+#edit-profile-button {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  color: var(--title);
+  transition: all 0.16s var(--ease);
+}
+#edit-profile-button:hover { border-color: var(--blue-main); color: var(--blue-main); background: var(--blue-soft); }
+
+/* mobile-only controls: not needed with the always-visible card */
+.close-profile-btn,
+.mobile-profile-toggle { display: none; }
+
+/* --- Edit profile overlay --- */
+.edit-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: rgba(23, 32, 44, 0.55);
+  backdrop-filter: blur(3px);
+  align-items: center;
+  justify-content: center;
+  padding: var(--s5);
+  overflow-y: auto;
+}
+.edit-overlay.active { display: flex; }
+.edit-content {
+  width: min(520px, 94vw);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--s6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.edit-picture { display: flex; align-items: center; gap: var(--s4); }
+.edit-picture img { width: 72px; height: 72px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--line); }
+.upload-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.upload-btn:hover { border-color: var(--blue-main); color: var(--blue-main); }
+.edit-picture input[type='file'] { display: none; }
+.display-name-container { display: flex; flex-direction: column; gap: 6px; }
+.edit-actions { display: flex; gap: var(--s3); justify-content: flex-end; }
+#edit-error { font-size: 0.85rem; }
+
+/* --- Background banner + stats --- */
+.top-section {
+  position: relative;
+  margin-top: var(--s5);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--s6);
+  padding: var(--s8) var(--s6) var(--s3);
+}
+
+/* the tab bar lives inside .top-section on this page — style it for the dark banner */
+.top-section .details-navigation {
+  position: relative;
+  z-index: 2;
+  border-bottom: none;
+  margin-bottom: 0;
+}
+.top-section .details-navigation-ul-li { color: rgba(255, 255, 255, 0.72); }
+.top-section .details-navigation-ul-li:hover { color: #fff; }
+.top-section .details-navigation-ul-li.active { color: #fff; border-bottom-color: #fff; }
+.top-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8, 12, 18, 0.85) 0%, rgba(8, 12, 18, 0.25) 60%, transparent 100%);
+}
+.top-section-statistics {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: var(--s5);
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: flex-end;
+}
+.top-section-statistics .section-1 { display: flex; gap: var(--s5); flex-wrap: wrap; }
+.top-section-statistics .section-2 { margin-left: auto; }
+.stat-1 { display: flex; gap: var(--s3); flex-wrap: wrap; }
+.mean-score, .titles-watched, .total-completed, .total-episodes, .total-days, .total-hours {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius);
+  padding: var(--s3) var(--s4);
+  min-width: 96px;
+  backdrop-filter: blur(6px);
+}
+.top-section-statistics p { color: #eaf2fb; }
+.top-section-statistics p:first-child { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.85; }
+.score-text, .titles-watched-text, .text { font-size: 0.72rem !important; }
+.score, .title-count, .completed-count, .episode-count, .day-count, .hour-count {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #fff !important;
+}
+
+/* --- Tabs body --- */
+.bottom-section { margin-top: var(--s6); }
+.bottom-section h2 { margin-bottom: var(--s4); }
+
+/* The page script sets display:flex on the active tab; keep it a column so the
+   grids and tables stretch to full width. */
+.tab-content.active { flex-direction: column; gap: var(--s5); }
+
+/* --- Anime list table --- */
+.anime-list-container, #favorites-section, .top-tracks-container, #statistics-section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--s5);
+  box-shadow: var(--shadow-sm);
+}
+#user-anime-table-container { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+thead th {
+  text-align: left;
+  padding: var(--s3);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+tbody td {
+  padding: var(--s3);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+
+/* rows built by the page script */
+.anime-list-title-link { display: flex; align-items: center; gap: var(--s3); font-weight: 600; color: var(--title); }
+.anime-list-item-img {
+  width: 46px;
+  height: 66px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  flex: none;
+}
+.anime-list-status-select, .anime-list-mood-select {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+  max-width: 150px;
+}
+.anime-list-score-input, .anime-list-ep-input {
+  width: 66px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+}
+.anime-list-status-select:focus, .anime-list-mood-select:focus,
+.anime-list-score-input:focus, .anime-list-ep-input:focus { outline: none; border-color: var(--primary); }
+
+/* --- Favourites & tracks grids --- */
+#favorite-anime-grid, #favorite-tracks-list { margin-top: var(--s4); }
+.anime-card, .favorite-card {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.anime-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.anime-card img, .card-image { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; display: block; }
+.card-image-container { overflow: hidden; }
+.anime-title-overlay { padding: var(--s3); }
+.anime-title { font-size: 0.85rem; font-weight: 600; color: var(--title); }
+.anime-card p, .anime-card h3 { padding: 0 var(--s3); }
+.anime-card h3 { font-size: 0.9rem; margin-top: var(--s3); }
+.anime-card p { font-size: 0.78rem; color: var(--muted); padding-bottom: var(--s3); }
+
+/* --- Track cards (built by the page script) --- */
+.track-card {
+  position: relative;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.track-image-wrapper { position: relative; }
+.track-image-wrapper img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; display: block; }
+
+.info-icon-container {
+  position: absolute;
+  top: var(--s2);
+  right: var(--s2);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: rgba(10, 14, 22, 0.6);
+  color: #fff;
+  cursor: pointer;
+}
+.info-icon { font-size: 16px; }
+
+.track-info-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  max-height: 100%;
+  overflow: hidden;
+  padding: var(--s3);
+  background: linear-gradient(to top, rgba(6, 9, 14, 0.94), rgba(6, 9, 14, 0.55) 60%, transparent);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+.track-card:hover .track-info-overlay,
+.track-card:focus-within .track-info-overlay { opacity: 1; }
+.track-info-content h4 { color: #fff; font-size: 0.85rem; margin-bottom: 2px; }
+.track-info-content p { margin: 0; font-size: 0.72rem; color: rgba(255, 255, 255, 0.85); }
+.track-info-content a { color: #bcdcff; font-weight: 600; }
+
+.remove-track-btn {
+  position: absolute;
+  top: var(--s2);
+  left: var(--s2);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-full);
+  background: rgba(10, 14, 22, 0.6);
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
+}
+.remove-track-btn:hover { background: var(--bad); }
+
+/* an empty-state paragraph inside a grid should span the full row */
+.grid-container > p { grid-column: 1 / -1; }
+
+/* --- Add track form --- */
+.add-track-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--s3);
+  margin-bottom: var(--s4);
+}
+.add-track-form .anime-search-container { position: relative; grid-column: 1 / -1; }
+#add-custom-theme-btn { grid-column: 1 / -1; justify-self: start; }
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  max-height: 240px;
+  overflow-y: auto;
+  display: none;
+}
+.autocomplete-dropdown.active,
+.autocomplete-dropdown[style*='display: block'] { display: block; }
+.autocomplete-item {
+  padding: var(--s3) var(--s4);
+  cursor: pointer;
+  font-size: 0.88rem;
+}
+.autocomplete-item:hover { background: var(--blue-soft); }
+.message { color: var(--good); font-weight: 600; font-size: 0.9rem; }
+.error-message { color: var(--bad); font-weight: 600; font-size: 0.9rem; }
+
+/* --- Statistics tab --- */
+.stats-grid { display: flex; flex-direction: column; gap: var(--s5); }
+.chart-container, .ranking-container {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--s5);
+}
+.chart-container h3, .ranking-container h3 { margin-bottom: var(--s4); }
+#watchHourLeaderboard { margin-top: var(--s4); }
+#showAllRanksBtn {
+  margin-top: var(--s4);
+  padding: 9px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  font-weight: 600;
+}
+#showAllRanksBtn:hover { border-color: var(--blue-main); color: var(--blue-main); }
+#allRanksOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 160;
+  background: rgba(23, 32, 44, 0.55);
+  align-items: center;
+  justify-content: center;
+  padding: var(--s5);
+}
+#allRanksOverlay > * { background: var(--surface); border-radius: var(--radius-lg); padding: var(--s5); max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .main-body { padding: var(--s5) var(--s4) var(--s7); }
+  .profile-details { padding: calc(var(--topbar-h) + var(--s4)) var(--s4) 0; align-items: center; }
+  .avatar-img { width: 68px; height: 68px; }
+
+  /* the avatar and name share one row with the edit button, and a long name
+     truncates rather than shoving the button off-screen */
+  .profile-header { flex: 1; min-width: 0; }
+  .avatar-wrapper { min-width: 0; gap: var(--s3); }
+  .username { font-size: 1.15rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* --- the banner --- */
+  .top-section {
+    min-height: 0;
+    padding: var(--s7) var(--s4) var(--s3);
+    gap: var(--s4);
+  }
+
+  /* The six stats used to wrap into a ragged stack of tiles. Flatten the
+     wrapper elements so the six tiles become one even 3x2 grid. */
+  .top-section-statistics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    align-items: stretch;
+    width: 100%;
+  }
+  .top-section-statistics .section-1,
+  .top-section-statistics .section-2,
+  .stat-1 { display: contents; }
+
+  .mean-score, .titles-watched, .total-completed, .total-episodes, .total-days, .total-hours {
+    min-width: 0;
+    padding: 7px 8px;
+    border-radius: 10px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .score, .title-count, .completed-count, .episode-count, .day-count, .hour-count { font-size: 1.05rem; }
+  .score-text, .titles-watched-text, .text { font-size: 0.6rem !important; letter-spacing: 0.03em; }
+
+  /* the tabs become one scrollable strip instead of a wrapped block */
+  .top-section .details-navigation { margin: 0 calc(-1 * var(--s4)); }
+  .top-section .details-navigation-ul {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: var(--s4);
+    padding: 0 var(--s4);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .top-section .details-navigation-ul::-webkit-scrollbar { display: none; }
+  .top-section .details-navigation-ul-li { flex: none; white-space: nowrap; }
+}

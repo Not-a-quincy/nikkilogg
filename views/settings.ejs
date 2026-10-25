@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings — Nikkilog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <%- include('partials/meta', { metaTitle: "Settings — Nikkilog", metaNoIndex: true }) %>
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+    <%- include('partials/topbar', { active: 'settings' }) %>
+
+    <main class="content-area">
+        <div class="content-inner">
+            <header class="page-head">
+                <span class="eyebrow">Account</span>
+                <h1 class="headline-lg">Settings</h1>
+                <p class="muted">Connect the browser extension, and manage anything that can act as you.</p>
+            </header>
+
+            <section class="card" style="padding: var(--s5); margin-bottom: var(--s5);">
+                <h2 class="headline-sm" style="margin-bottom: var(--s2);">Recovery code</h2>
+                <p class="muted" style="margin-bottom: var(--s4);">
+                    Your account has no email address, so a recovery code is the only way back in
+                    if you forget your password. You get <strong>two</strong>, and either one works.
+                    Generating a new pair <strong>replaces both</strong> — anything you wrote down
+                    before stops working.
+                </p>
+                <button class="btn" type="button" id="genRecovery">Generate a new pair of codes</button>
+                <div id="recoveryOut" hidden style="margin-top: var(--s4);">
+                    <p class="muted" style="margin-bottom: var(--s2);">
+                        Write this down now. It is shown once and cannot be looked up again.
+                    </p>
+                    <div class="recovery-pair">
+                        <div>
+                            <span class="recovery-label">Code 1</span>
+                            <p id="recoveryValue1" class="recovery-code" aria-label="Your first new recovery code"></p>
+                        </div>
+                        <div>
+                            <span class="recovery-label">Code 2</span>
+                            <p id="recoveryValue2" class="recovery-code" aria-label="Your second new recovery code"></p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="button" id="copyRecovery2">Copy both</button>
+                </div>
+                <p class="form-error" id="recoveryMsg" role="alert"></p>
+            </section>
+
+            <section class="card" style="padding: var(--s5); margin-bottom: var(--s5);">
+                <h2 class="headline-sm" style="margin-bottom: var(--s2);">Change your password</h2>
+                <p class="muted" style="margin-bottom: var(--s4);">
+                    You will need your current password — knowing the session is not enough.
+                    This account has no email address, so <strong>there is no password reset</strong>:
+                    if you forget it, it can only be reset on the server.
+                </p>
+                <form id="changePasswordForm" novalidate>
+                    <div class="field">
+                        <label for="current_password">Current password</label>
+                        <input type="password" id="current_password" name="current_password"
+                               autocomplete="current-password" placeholder="Your current password" required>
+                    </div>
+                    <div class="field">
+                        <label for="new_password">New password</label>
+                        <input type="password" id="new_password" name="new_password"
+                               autocomplete="new-password" placeholder="At least 8 characters" required>
+                        <span class="hint">Use 8 or more characters. A passphrase is great.</span>
+                    </div>
+                    <div class="field">
+                        <label for="confirm_new">Confirm new password</label>
+                        <input type="password" id="confirm_new" name="confirm_new"
+                               autocomplete="new-password" placeholder="Type it once more" required>
+                    </div>
+                    <button class="btn btn-primary" type="submit" id="changePwBtn">Change password</button>
+                    <p class="form-error" id="changePwMsg" role="alert"></p>
+                </form>
+            </section>
+
+            <section class="card" style="padding: var(--s5); margin-bottom: var(--s5);">
+                <h2 class="headline-sm" style="margin-bottom: var(--s2);">Import from MyAnimeList</h2>
+                <p class="muted" style="margin-bottom: var(--s4);">
+                    Bring your ratings, progress and statuses across from a MyAnimeList export.
+                    You see exactly what will change before anything is written.
+                </p>
+                <a class="btn btn-primary" href="/import">Import my list</a>
+            </section>
+
+            <section class="card" style="padding: var(--s5); margin-bottom: var(--s5);">
+                <h2 class="headline-sm" style="margin-bottom: var(--s2);">Log your moods</h2>
+                <p class="muted" style="margin-bottom: var(--s4);">
+                    Every show you've tracked, one tap each. This is what fills the
+                    <a href="/mood/calm">by-mood</a> pages — the only content on this site
+                    that cannot be copied from anywhere else. It takes about two minutes.
+                </p>
+                <a class="btn btn-primary" href="/mood-seed">Start logging moods</a>
+            </section>
+
+            <section class="card" style="padding: var(--s5); margin-bottom: var(--s5);">
+                <h2 class="headline-sm" style="margin-bottom: var(--s2);">Browser extension</h2>
+                <p class="muted" style="margin-bottom: var(--s4);">
+                    A token lets the Nikkilog extension log what you watch without you signing in again.
+                    Treat it like a password — anyone with it can change your list.
+                    You can revoke it at any time, and it stops working immediately.
+                </p>
+
+                <div class="token-create">
+                    <div class="field">
+                        <label for="tokenName">What is this token for?</label>
+                        <input id="tokenName" maxlength="80" placeholder="e.g. Chrome on my laptop">
+                    </div>
+                    <button class="btn btn-primary" id="createTokenBtn" type="button">Create token</button>
+                </div>
+
+                <div class="token-reveal" id="tokenReveal" hidden>
+                    <strong>Copy this now — it is shown only once.</strong>
+                    <code id="tokenValue"></code>
+                    <button class="btn btn-primary" id="copyTokenBtn" type="button">Copy</button>
+                </div>
+
+                <div id="tokenList">
+                    <p class="muted">Loading…</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/promos.js" defer></script>
+    <script src="/js/settings.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,472 @@
+/* ==========================================================================
+   Nikkilog — Browse page (toolbar, filter panel, poster grid)
+   ========================================================================== */
+
+/* --- Sort / filter toolbar --- */
+#anime-sort {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s3) var(--s4);
+  margin-bottom: var(--s5);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+#anime-sort select {
+  width: auto;
+  min-width: 132px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+}
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  margin-left: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  font-weight: 600;
+  color: var(--title);
+  transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+.filter-btn:hover { border-color: var(--blue-main); color: var(--blue-main); background: var(--blue-soft); }
+.filter-btn .material-symbols-outlined { font-size: 18px; }
+
+#no-anime-message {
+  padding: var(--s6);
+  text-align: center;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+/* --- Poster grid --- */
+#dynamic_anime_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(164px, 1fr));
+  gap: var(--s4);
+}
+
+.anime_card {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.anime_card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+
+/* image layer */
+.middle-section { position: absolute; inset: 0; }
+.image_div {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.middle_image_anchor { display: block; width: 100%; height: 100%; }
+.middle_image { width: 100%; height: 100%; object-fit: cover; }
+
+.rating {
+  position: absolute;
+  /* below the control bar: the badge owns the top-left, the buttons the
+     top-right, and the genre row the bottom */
+  top: 44px;
+  right: 8px;
+  z-index: 3;
+  margin: 0;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  background: rgba(15, 20, 28, 0.72);
+  color: #ffd76a;
+  font-size: 0.74rem;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+
+/* title + genres overlay */
+.top-section {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: var(--s6) var(--s4) var(--s4);
+  /* darker, taller scrim so the title and genres stay legible over bright posters */
+  background: linear-gradient(
+    to top,
+    rgba(6, 9, 14, 0.96) 0%,
+    rgba(6, 9, 14, 0.9) 30%,
+    rgba(6, 9, 14, 0.62) 60%,
+    rgba(6, 9, 14, 0.18) 85%,
+    transparent 100%
+  );
+  color: #fff;
+}
+.title-en { line-height: 1.3; }
+.title_en_anchor {
+  color: #fff;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* Reserve two lines whether the title needs one or two, so every card's
+     text block is the same height and the rows line up across the grid. */
+  min-height: 2.6em;
+}
+.title_en_anchor:hover { color: #bcdcff; }
+.type { font-size: 0.68rem; font-weight: 600; color: #9ec9ff; margin-left: 2px; }
+
+.genre {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 5px;
+  margin-top: 7px;
+  /* Exactly one row, always. Anything that overflows fades out rather than
+     wrapping to a second line and pushing this card out of line with its
+     neighbours. */
+  max-height: 1.7rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 84%, transparent 100%);
+}
+.genre-tag {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.16);
+  color: #eaf2fb;
+  font-size: 0.66rem;
+  font-weight: 600;
+}
+
+/* synopsis on hover */
+.synopsis_and_misc {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  padding: var(--s4) var(--s3);
+  background: linear-gradient(180deg, rgba(11, 16, 24, 0.96), rgba(8, 11, 17, 0.98));
+  backdrop-filter: blur(8px);
+  color: #dbe4ee;
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+  transition-delay: 0s;
+  overflow: hidden;
+  pointer-events: none; /* let the wheel scroll the page and clicks reach the card */
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+.anime_card:hover .synopsis_and_misc,
+.anime_card:focus-within .synopsis_and_misc { opacity: 1; transition-delay: 0.4s; }
+.synopsis_p {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: #c8d3e0;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.misc_div {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  font-size: 0.75rem;
+  color: #9fb0c4;
+}
+.misc_div .year { font-weight: 700; color: #eaf2fb; }
+.misc_div .status { color: #9ec9ff; }
+
+/* overlays on the card */
+.favorite-btn,
+.main-action-btn {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-full);
+  background: rgba(15, 20, 28, 0.7);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  transition: background 0.18s var(--ease), transform 0.12s var(--ease);
+}
+/* Every control on the card lives in this one bar: the status badge on the
+   left, then the add and favourite buttons on the right. It spans the card's
+   top edge so nothing needs its own coordinates. */
+.card-controls {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none; /* the bar itself must not swallow card clicks */
+}
+.card-controls > * { pointer-events: auto; }
+
+/* The script appends the favourite first, so order them here instead of
+   reordering the DOM: status on the left, then the add and favourite buttons. */
+.card-controls .user-status-badge { order: 1; margin-right: auto; }
+.card-controls .main-action-wrapper { order: 2; }
+.card-controls .favorite-btn { order: 3; }
+
+.favorite-btn { position: static; }
+.favorite-btn:hover { transform: scale(1.08); }
+.favorite-btn .material-symbols-outlined,
+.main-action-btn .material-symbols-outlined { font-size: 18px; }
+.favorite-btn.favorited { color: #ff5c7a; background: rgba(255, 92, 122, 0.22); }
+
+.main-action-wrapper { position: relative; flex: none; }
+.main-action-btn { position: relative; }
+.main-action-btn:hover { background: var(--blue-main); }
+
+.action-dropdown {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  z-index: 7;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  min-width: 130px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+}
+.action-option {
+  padding: 7px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.82rem;
+  text-align: left;
+  white-space: nowrap;
+}
+.action-option:hover { background: var(--blue-soft); color: var(--blue-dark); }
+.action-option.current-status { background: var(--blue-soft); color: var(--blue-dark); font-weight: 600; }
+
+.user-status-badge {
+  position: static;
+  flex: none;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* mobile title overlay: hidden on desktop */
+.mobile-title-overlay { display: none; }
+
+/* --- Filter panel: a right-hand drawer, sticky header, sticky actions --- */
+.filter-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(23, 32, 44, 0.5);
+  backdrop-filter: blur(4px);
+  justify-content: flex-end;
+}
+
+.filter-panel {
+  width: min(440px, 100%);
+  height: 100%;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  animation: filter-in 0.2s var(--ease);
+}
+@keyframes filter-in {
+  from { transform: translateX(20px); opacity: 0.35; }
+  to { transform: none; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .filter-panel { animation: none; } }
+
+.filter-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  padding: var(--s5) var(--s5) var(--s4);
+  border-bottom: 1px solid var(--line);
+}
+.filter-title { font-size: 1.1rem; letter-spacing: -0.01em; }
+
+.close-filter {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--surface-2);
+  color: var(--title);
+  cursor: pointer;
+  transition: background 0.16s var(--ease), color 0.16s var(--ease);
+}
+.close-filter:hover { background: var(--blue-soft); color: var(--blue-main); }
+.close-filter .material-symbols-outlined { font-size: 20px; }
+
+.filter-body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--s5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+}
+
+.filter-section + .filter-section { padding-top: var(--s5); border-top: 1px solid var(--line); }
+.filter-section > p {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--outline);
+  margin-bottom: var(--s3);
+}
+
+.tag-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+.tag-grid label {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background: var(--surface-2);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.14s var(--ease), color 0.14s var(--ease), border-color 0.14s var(--ease);
+}
+.tag-grid label:hover { border-color: var(--blue-main); color: var(--blue-main); }
+
+/* The filter is three-state: tap once to require a tag, twice to exclude it.
+   The script sets these classes (and `checked` only for the included state), so
+   both selectors are needed — :has() alone would miss nothing, but .included and
+   .excluded are what the script actually maintains. */
+.tag-grid label.included,
+.tag-grid label:has(input:checked) {
+  background: var(--blue-main);
+  border-color: var(--blue-main);
+  color: #fff;
+  box-shadow: 0 2px 8px -2px rgba(70, 72, 212, 0.45);
+}
+.tag-grid label.included::after,
+.tag-grid label:has(input:checked)::after {
+  content: '✓';
+  margin-left: 6px;
+  font-size: 0.72em;
+  opacity: 0.9;
+}
+.tag-grid label.excluded {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+  color: var(--danger);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.tag-grid label.excluded::after {
+  content: '✕';
+  margin-left: 6px;
+  font-size: 0.72em;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* the legend that explains the two taps */
+.filter-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--s4);
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-size: 0.74rem;
+  color: var(--on-surface-variant);
+}
+.filter-hint .material-symbols-outlined { font-size: 15px; color: var(--primary); }
+
+/* count of active filters, shown on the Filter button */
+.filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.tag-checkbox { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.apply_clear_btn {
+  flex: none;
+  display: flex;
+  gap: var(--s3);
+  padding: var(--s4) var(--s5);
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+.apply_clear_btn button { flex: 1; }
+.btn-label { font-weight: 600; }
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  #dynamic_anime_grid { grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: var(--s3); }
+  .synopsis_and_misc { display: none; } /* hover isn't available on touch */
+  .mobile-title-overlay {
+    display: block;
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 2;
+    padding: var(--s5) var(--s3) var(--s3);
+    background: linear-gradient(to top, rgba(8, 12, 18, 0.92), transparent);
+  }
+  .mobile-title-overlay .title_en_anchor { color: #fff; font-weight: 700; font-size: 0.86rem; }
+  .top-section { display: none; } /* replaced by mobile-title-overlay */
+}
+@media (max-width: 520px) {
+  #dynamic_anime_grid { grid-template-columns: repeat(2, 1fr); }
+  .filter-btn { margin-left: 0; width: 100%; justify-content: center; }
+}

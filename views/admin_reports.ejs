@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reported Comments</title>
+    <%- include('partials/meta', { metaTitle: "Reports — Nikkilog", metaDescription: "Moderation queue.", metaNoIndex: true, }) %>
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/admin_report.css">
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+
+    <%- include('partials/topbar', { active: 'admin' }) %>
+  <h1>Reported Comments</h1>
+
+  <% if (reports && reports.length) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Comment</th>
+          <th>Reported By</th>
+          <th>Reason</th>
+          <th>Details</th>
+          <th>Status</th>
+          <th>Reported At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% reports.forEach(function(report) { %>
+        <tr>
+          <td>
+            <div><strong><%= report.commenter_name || 'Anonymous' %></strong></div>
+            <div><%= report.comment_text %></div>
+          </td>
+          <td>
+            <% if (report.user_id) { %>
+              User ID: <%= report.user_id %>
+            <% } else { %>
+              Anonymous
+            <% } %>
+            <br>
+            <small><%= report.ip_address %></small>
+          </td>
+          <td><%= report.reason %></td>
+          <td><%= report.details || '-' %></td>
+          <td><%= report.status %></td>
+          <td><%= report.reported_at %></td>
+          <td>
+            <form action="/admin/reports/<%= report.report_id %>/status" method="post">
+              <input type="hidden" name="comment_id" value="<%= report.comment_id %>">
+              <button name="status" value="reviewed">Mark Reviewed</button>
+              <button name="status" value="ignored">Ignore</button>
+              <button name="status" value="delete_comment" onclick="return confirm('Are you sure?')">Delete Comment</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>No reports yet.</p>
+  <% } %>
+    <script src="/js/topbar.js" defer></script>
+    <%- include('partials/footer') %>
+    <script src="/js/promos.js" defer></script>
+</body>
+</html>

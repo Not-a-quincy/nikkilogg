@@ -1,0 +1,122 @@
+/* ==========================================================================
+   Nikkilog — Auth pages (login / register)
+   Depends on tokens.css (loaded first).
+   ========================================================================== */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--lg) var(--md);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.auth-ambient {
+  position: fixed;
+  top: -180px; left: 50%;
+  transform: translateX(-50%);
+  width: min(900px, 110vw);
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, var(--primary-fixed) 0%, rgba(255, 218, 220, 0.45) 45%, transparent 70%);
+  filter: blur(80px);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-wrap .brand { margin-bottom: var(--lg); }
+
+.auth-card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  padding: var(--xl);
+  box-shadow: var(--shadow-pop);
+  text-align: left;
+}
+.auth-card h1 { margin-bottom: var(--xs); }
+.auth-sub { color: var(--on-surface-variant); margin-bottom: var(--lg); }
+
+.auth-card .field:last-of-type { margin-bottom: var(--lg); }
+.auth-card .opt { font-weight: 500; color: var(--outline); font-size: 0.75rem; }
+
+.auth-card .btn-block { margin-top: var(--xs); }
+
+.auth-alt { margin-top: var(--lg); font-size: 0.875rem; color: var(--on-surface-variant); text-align: center; }
+.auth-alt a { color: var(--primary); font-weight: 600; }
+.auth-alt a:hover { color: var(--primary-container); text-decoration: underline; }
+
+.auth-foot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--lg);
+  font-size: 0.75rem;
+  color: var(--outline);
+  text-align: center;
+}
+.auth-foot .material-symbols-outlined { font-size: 15px; }
+
+@media (max-width: 480px) {
+  .auth-card { padding: var(--lg) var(--md); border-radius: var(--r-md); }
+  .auth-card h1 { font-size: 1.75rem; }
+}
+
+/* --- live username availability --- */
+.username-status {
+  display: block;
+  min-height: 1.05rem;      /* reserved, so the form does not jump as it changes */
+  margin-top: 6px;
+  font-size: 0.78rem;
+  line-height: 1.3;
+  color: var(--outline);
+}
+.username-status.is-checking { color: var(--outline); }
+.username-status.is-good { color: #157f4d; font-weight: 600; }
+.username-status.is-good::before { content: '\2713 '; }
+.username-status.is-bad { color: var(--danger); font-weight: 600; }
+.username-status.is-bad::before { content: '\2715 '; }
+.username-status strong { font-weight: 700; }
+
+/* --- recovery code, shown once --- */
+.recovery-code {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: var(--s4);
+  margin-bottom: var(--s3);
+  border: 1px dashed var(--outline);
+  border-radius: var(--radius);
+  background: var(--surface-low);
+  color: var(--title);
+  user-select: all;   /* one tap selects the whole code */
+}
+
+/* --- a pair of recovery codes --- */
+.recovery-pair { display: flex; flex-direction: column; gap: var(--s3); margin-bottom: var(--s3); }
+.recovery-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--outline);
+  margin-bottom: 4px;
+}
+.recovery-pair .recovery-code { margin-bottom: 0; }

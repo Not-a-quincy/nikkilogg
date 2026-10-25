@@ -1,0 +1,18 @@
+<%#
+  The Nikkilog logo: the wordmark, the Japanese subtitle, and the orange dot from
+  the original lockup.
+
+  Drawn as HTML rather than an <img src="logo.svg"> on purpose. An SVG loaded via
+  <img> renders in isolation and cannot use the page's fonts, so the wordmark
+  would fall back to a system font instead of Plus Jakarta Sans. As real text it
+  stays crisp, uses the site's own font, and can be read by a screen reader.
+
+  Colours are the light-background variants. The original #E0E0E0 wordmark was
+  drawn for a dark ground and has 1.26:1 contrast against this header.
+%>
+<a class="brand" href="/" aria-label="Nikkilog — home">
+    <span class="brand-lockup">
+        <span class="brand-name">Nikkilog<span class="brand-dot" aria-hidden="true"></span></span>
+        <span class="brand-kanji" lang="ja">日記ログ</span>
+    </span>
+</a>

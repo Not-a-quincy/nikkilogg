@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in — Nikkilog</title>
+    <%- include('partials/meta', { metaTitle: "Log in — Nikkilog", metaDescription: "Sign in to your Nikkilog anime diary.", metaNoIndex: true, }) %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body class="auth-page">
+    <div class="auth-ambient" aria-hidden="true"></div>
+
+    <main class="auth-wrap">
+        <%- include('partials/brand') %>
+
+        <div class="auth-card">
+            <h1 class="headline-lg">Welcome back</h1>
+            <p class="auth-sub">Sign in to pick up where you left off.</p>
+
+            <div class="form-error" id="authError" role="alert"></div>
+
+            <form id="loginForm" novalidate>
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" autocomplete="username"
+                           autocapitalize="none" spellcheck="false" placeholder="your username" required>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" autocomplete="current-password"
+                           placeholder="Your password" required>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit" id="submitBtn">Log in</button>
+            </form>
+
+            <p class="auth-alt">New here? <a href="/register">Create an account</a></p>
+            <p class="auth-alt">Forgotten your password? <a href="/recover">Use a recovery code</a>.</p>
+        </div>
+
+        <p class="auth-foot">
+            <span class="material-symbols-outlined">lock</span>
+            Passwords are stored as salted hashes — never in plain text.
+        </p>
+    </main>
+
+    <script>window.AUTH_NEXT = <%- JSON.stringify(next || '') %>;</script>
+    <script src="/js/auth.js" defer></script>
+</body>
+</html>

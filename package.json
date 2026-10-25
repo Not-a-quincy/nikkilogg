@@ -1,0 +1,83 @@
+{
+  "name": "nikkilog-express",
+  "version": "1.0.0",
+  "description": "A calm, self-hosted anime tracker \u2014 browse a catalogue, log what you watch, rate it and write down what you thought.",
+  "license": "MIT",
+  "author": "Vasanth Santhosh",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR-USERNAME/nikkilog-express.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR-USERNAME/nikkilog-express/issues"
+  },
+  "homepage": "https://github.com/YOUR-USERNAME/nikkilog-express#readme",
+  "keywords": [
+    "anime",
+    "tracker",
+    "myanimelist",
+    "express",
+    "ejs",
+    "mysql",
+    "self-hosted",
+    "nodejs"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "setup-db": "node scripts/setup-db.js",
+    "set-password": "node scripts/set-password.js",
+    "import-db": "node scripts/import-db.js",
+    "prestart": "node scripts/check-deps.js",
+    "predev": "node scripts/check-deps.js",
+    "presetup-db": "node scripts/check-deps.js",
+    "preset-password": "node scripts/check-deps.js",
+    "preimport-db": "node scripts/check-deps.js",
+    "test": "node tests/run.js",
+    "test:fast": "node tests/run.js --fast",
+    "audit:prod": "npm audit --omit=dev",
+    "import-mal": "node scripts/import-mal.js",
+    "preimport-mal": "node scripts/check-deps.js",
+    "gen-secret": "node scripts/gen-secret.js",
+    "migrate": "node scripts/migrate.js",
+    "premigrate": "node scripts/check-deps.js",
+    "update-anime": "node scripts/update-anime.js",
+    "preupdate-anime": "node scripts/check-deps.js",
+    "update-anime:check": "node scripts/update-anime.js --check",
+    "update-anime:apply": "node scripts/update-anime.js --apply",
+    "update-anime:upcoming": "node scripts/update-anime.js --upcoming",
+    "preupdate-anime:check": "node scripts/check-deps.js",
+    "preupdate-anime:apply": "node scripts/check-deps.js",
+    "preupdate-anime:upcoming": "node scripts/check-deps.js",
+    "add-anime": "node scripts/add-anime.js",
+    "preadd-anime": "node scripts/check-deps.js",
+    "update-anime:year": "node scripts/update-anime.js --year 2026",
+    "update-anime:year:apply": "node scripts/update-anime.js --year 2026 --apply",
+    "preupdate-anime:year": "node scripts/check-deps.js",
+    "preupdate-anime:year:apply": "node scripts/check-deps.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-mysql-session": "^3.0.3",
+    "express-session": "^1.18.0",
+    "fast-xml-parser": "^5.11.2",
+    "multer": "^2.0.1",
+    "mysql2": "^3.24.6",
+    "node-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^23.11.1"
+  },
+  "overrides": {
+    "express-mysql-session": {
+      "mysql2": "$mysql2"
+    }
+  }
+}

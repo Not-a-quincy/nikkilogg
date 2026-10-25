@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events &amp; Sponsors — Nikkilog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <%- include('partials/meta', { metaTitle: "Events & Sponsors — Nikkilog", metaNoIndex: true }) %>
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+    <%- include('partials/topbar', { active: 'admin' }) %>
+
+    <main class="content-area">
+        <div class="content-inner">
+            <header class="page-head">
+                <span class="eyebrow">Admin</span>
+                <h1 class="headline-lg">Events &amp; Sponsors</h1>
+                <p class="muted">Announcements appear in a bar at the top of every page. Events show on the home page and <a href="/events">/events</a>. Partners show in the footer.</p>
+            </header>
+
+            <div class="admin-grid">
+                <form class="card admin-form" id="promoForm">
+                    <h2 class="headline-sm">Add an entry</h2>
+
+                    <div class="field">
+                        <label for="kind">Type</label>
+                        <select id="kind" name="kind">
+                            <option value="announcement">Announcement — top bar</option>
+                            <option value="event" selected>Event — home page &amp; /events</option>
+                            <option value="partner">Partner — footer</option>
+                        </select>
+                    </div>
+                    <div class="field"><label for="title">Title</label><input id="title" name="title" maxlength="160" required></div>
+                    <div class="field"><label for="subtitle">Short line</label><input id="subtitle" name="subtitle" maxlength="255" placeholder="Shown beside the title"></div>
+                    <div class="field"><label for="date_label">Date label</label><input id="date_label" name="date_label" maxlength="80" placeholder="e.g. 1 Nov – 30 Nov"></div>
+                    <div class="field"><label for="url">Link</label><input id="url" name="url" maxlength="500" placeholder="https://…"></div>
+                    <div class="field"><label for="image_url">Logo / image URL</label><input id="image_url" name="image_url" maxlength="500" placeholder="Used for partners"></div>
+                    <div class="field"><label for="sort_order">Sort order</label><input id="sort_order" name="sort_order" type="number" value="0"></div>
+
+                    <label class="check"><input type="checkbox" id="active" name="active" checked> Active (visible on the site)</label>
+
+                    <div class="form-error" id="adminError"></div>
+                    <button class="btn btn-primary" type="submit" id="submitBtn">Add entry</button>
+                </form>
+
+                <section class="card admin-list">
+                    <h2 class="headline-sm">Current entries</h2>
+                    <div id="promoList" class="promo-list">
+                        <div class="empty-state"><span class="material-symbols-outlined">hourglass_empty</span><p>Loading…</p></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/promos.js" defer></script>
+    <script src="/js/admin_promos.js" defer></script>
+</body>
+</html>

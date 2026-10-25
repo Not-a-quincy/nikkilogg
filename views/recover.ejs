@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recover your account — Nikkilog</title>
+    <%- include('partials/meta', { metaTitle: "Recover your account — Nikkilog", metaDescription: "Reset your password with a recovery code.", metaNoIndex: true, }) %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body class="auth-page">
+    <div class="auth-ambient" aria-hidden="true"></div>
+
+    <main class="auth-wrap">
+        <%- include('partials/brand') %>
+
+        <div class="auth-card">
+            <h1 class="headline-lg">Recover your account</h1>
+            <p class="auth-sub">
+                This account has no email address, so there is nothing to send a reset link to.
+                Your <strong>recovery codes</strong> are the way back in — the two 16-digit codes you
+                were shown when you signed up. Either one works, and each works once.
+            </p>
+
+            <div class="form-error" id="authError" role="alert"></div>
+
+            <form id="recoverForm" novalidate>
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" autocomplete="username"
+                           autocapitalize="none" spellcheck="false" placeholder="your username" required>
+                </div>
+                <div class="field">
+                    <label for="code">Recovery code</label>
+                    <input type="text" id="code" name="code" inputmode="numeric" autocomplete="off"
+                           spellcheck="false" maxlength="19" placeholder="0000-0000-0000-0000" required>
+                    <span class="hint">Dashes and spaces are fine — type it however you wrote it down.</span>
+                </div>
+                <div class="field">
+                    <label for="new_password">New password</label>
+                    <input type="password" id="new_password" name="new_password"
+                           autocomplete="new-password" placeholder="At least 8 characters" required>
+                    <span class="hint">Use 8 or more characters. A passphrase is great.</span>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit" id="submitBtn">Reset my password</button>
+            </form>
+
+            <p class="auth-alt">
+                Remembered it? <a href="/login">Log in</a>.
+                Lost the code too? The account cannot be recovered — you can
+                <a href="/register">make a new one</a>.
+            </p>
+        </div>
+
+        <p class="auth-foot">
+            <span class="material-symbols-outlined">key</span>
+            Each code works once. After a reset, generate a fresh pair in Settings.
+        </p>
+    </main>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/recover.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    width: 320px; margin: 0; padding: 16px;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 13px; line-height: 1.5;
+  }
+  h1 { font-size: 15px; margin: 0 0 2px; }
+  .sub { opacity: .65; font-size: 12px; margin-bottom: 14px; }
+  label { display: block; font-weight: 600; margin: 12px 0 4px; }
+  input[type=text], input[type=password], input[type=number] {
+    width: 100%; box-sizing: border-box; padding: 7px 9px;
+    border: 1px solid rgba(128,128,128,.45); border-radius: 7px;
+    font: inherit; background: transparent; color: inherit;
+  }
+  .hint { opacity: .6; font-size: 11px; margin-top: 4px; }
+  .row { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .row label { margin: 0; font-weight: 500; }
+  .actions { display: flex; gap: 8px; margin-top: 16px; }
+  button {
+    flex: 1; font: inherit; font-weight: 600; padding: 8px 12px; cursor: pointer;
+    border-radius: 999px; border: 1px solid rgba(128,128,128,.45);
+    background: transparent; color: inherit;
+  }
+  button.primary { background: #6063ee; border-color: #6063ee; color: #fff; }
+  #status { margin-top: 12px; font-size: 12px; min-height: 16px; }
+  .ok { color: #1a9c62; } .bad { color: #d33; }
+  a { color: #6063ee; }
+</style>
+</head>
+<body>
+  <h1>Nikkilog Sync</h1>
+  <div class="sub">Logs what you watch to your own tracker.</div>
+
+  <label for="serverUrl">Your Nikkilog server</label>
+  <input id="serverUrl" type="text" placeholder="http://127.0.0.1:5000">
+  <div class="hint">Where your tracker runs. HTTPS if it is online.</div>
+
+  <label for="token">API token</label>
+  <input id="token" type="password" placeholder="nkl_...">
+  <div class="hint">Create one at <span id="tokenLink">/settings</span> on your server, then paste it here.</div>
+
+  <div class="row">
+    <input id="enabled" type="checkbox">
+    <label for="enabled">Enabled</label>
+  </div>
+  <div class="row">
+    <input id="autoLog" type="checkbox">
+    <label for="autoLog">Log silently when it is sure</label>
+  </div>
+
+  <label for="threshold">Count as watched at <span id="thresholdVal">85</span>%</label>
+  <input id="threshold" type="number" min="50" max="99" step="1">
+
+  <label for="idleMinutes">If the player is unreadable, wait <span id="idleVal">8</span> min</label>
+  <input id="idleMinutes" type="number" min="1" max="120" step="1">
+
+  <div class="actions">
+    <button class="primary" id="save">Save</button>
+    <button id="test">Test</button>
+  </div>
+  <div id="status"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

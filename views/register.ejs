@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create account — Nikkilog</title>
+    <%- include('partials/meta', { metaTitle: "Create account — Nikkilog", metaDescription: "Create your Nikkilog account.", metaNoIndex: true, }) %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body class="auth-page">
+    <div class="auth-ambient" aria-hidden="true"></div>
+
+    <main class="auth-wrap">
+        <%- include('partials/brand') %>
+
+        <div class="auth-card">
+            <h1 class="headline-lg">Create your account</h1>
+            <p class="auth-sub">A quiet home for your anime logs.</p>
+
+            <div class="form-error" id="authError" role="alert"></div>
+
+            <form id="registerForm" novalidate>
+                <div class="field">
+                    <label for="display_name">Display name <span class="opt">(optional)</span></label>
+                    <input type="text" id="display_name" name="display_name" autocomplete="nickname"
+                           maxlength="20" placeholder="What should we call you?">
+                </div>
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" autocomplete="username"
+                           autocapitalize="none" spellcheck="false" maxlength="20"
+                           placeholder="letters, numbers, - and _" required>
+                    <span class="username-status" id="usernameStatus" role="status" aria-live="polite"></span>
+                    <span class="hint">This is what you log in with. No email address is needed — or collected.</span>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" autocomplete="new-password"
+                           placeholder="At least 8 characters" required>
+                    <span class="hint">Use 8 or more characters. A passphrase is great.</span>
+                </div>
+                <div class="field">
+                    <label for="confirm">Confirm password</label>
+                    <input type="password" id="confirm" name="confirm" autocomplete="new-password"
+                           placeholder="Type it once more" required>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit" id="submitBtn">Create account</button>
+            </form>
+
+            <div id="recoveryPanel" hidden>
+                <h2 class="headline-sm" style="margin-bottom: var(--s2);">Save your recovery codes</h2>
+                <p class="muted" style="margin-bottom: var(--s3);">
+                    These are the <strong>only</strong> way back into your account if you forget your
+                    password — there is no email address on it, so nothing can be sent to you.
+                    Write them down somewhere safe. They are shown once and cannot be looked up again.
+                </p>
+                <div class="recovery-pair">
+                    <div>
+                        <span class="recovery-label">Code 1 — keep this one somewhere at home</span>
+                        <p id="recoveryCode1" class="recovery-code" aria-label="Your first recovery code"></p>
+                    </div>
+                    <div>
+                        <span class="recovery-label">Code 2 — keep this one somewhere else</span>
+                        <p id="recoveryCode2" class="recovery-code" aria-label="Your second recovery code"></p>
+                    </div>
+                </div>
+                <p class="muted" style="margin-bottom: var(--s3);">
+                    Keep them in two different places. Either one gets you back in, and each
+                    works once — so if one is lost, or someone sees you use it, the other still does.
+                </p>
+                <button class="btn btn-primary btn-block" type="button" id="copyRecovery">Copy both</button>
+                <a class="btn btn-block" href="/" style="margin-top: var(--s2);">I have saved it — continue</a>
+            </div>
+
+            <p class="auth-alt">Already have an account? <a href="/login">Log in</a></p>
+        </div>
+
+        <p class="auth-foot">
+            <span class="material-symbols-outlined">lock</span>
+            Passwords are stored as salted hashes — never in plain text.
+        </p>
+    </main>
+
+    <script src="/js/username-check.js" defer></script>
+    <script src="/js/auth.js" defer></script>
+</body>
+</html>

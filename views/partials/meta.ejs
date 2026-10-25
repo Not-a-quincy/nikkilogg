@@ -1,0 +1,26 @@
+<%
+  // Optional locals: metaTitle, metaDescription, metaImage, metaType, metaNoIndex
+  const _title = (typeof metaTitle !== 'undefined' && metaTitle) ? metaTitle : 'Nikkilog — Track what you watch, mindfully';
+  const _desc  = (typeof metaDescription !== 'undefined' && metaDescription) ? metaDescription
+               : 'A quiet, clutter-free home for your anime diary — log episodes, rate what you watch, and discover the seasonal zeitgeist.';
+  const _img   = (typeof metaImage !== 'undefined' && metaImage) ? metaImage : '/apple-touch-icon.png';
+  const _abs   = (u) => /^https?:\/\//.test(u) ? u : (locals.siteUrl || '') + u;
+  const _url   = (locals.siteUrl || '') + (locals.currentPath || '/');
+  const _type  = (typeof metaType !== 'undefined' && metaType) ? metaType : 'website';
+%>
+<meta name="description" content="<%= _desc %>">
+<% if (typeof metaNoIndex !== 'undefined' && metaNoIndex) { %><meta name="robots" content="noindex"><% } %>
+<meta property="og:site_name" content="Nikkilog">
+<meta property="og:type" content="<%= _type %>">
+<meta property="og:title" content="<%= _title %>">
+<meta property="og:description" content="<%= _desc %>">
+<meta property="og:image" content="<%= _abs(_img) %>">
+<meta property="og:url" content="<%= _url %>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= _title %>">
+<meta name="twitter:description" content="<%= _desc %>">
+<meta name="twitter:image" content="<%= _abs(_img) %>">
+<link rel="canonical" href="<%= _url %>">
+<% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+<script type="application/ld+json"><%- JSON.stringify(jsonLd).replace(/</g, '\\u003c') %></script>
+<% } %>

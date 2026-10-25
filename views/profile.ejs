@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile</title>
+    <%- include('partials/meta', { metaTitle: "My List — Nikkilog", metaDescription: "Your anime diary: progress, scores, favourites and stats.", metaNoIndex: true, }) %>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+
+    <%- include('partials/topbar', { active: 'list' }) %>
+
+        <div class="mobile-profile-toggle">
+          <div class="profile-toggle-icon">
+            <i class="material-symbols-outlined">person</i>
+          </div>
+        </div>
+
+        <div class="search-overlay-container" id="searchOverlay">
+            <div class="search">
+                <input type="search" placeholder="Search anime..." data-search id="searchInput" aria-label="Search anime">
+            </div>
+            <div class="search-results" id="searchResults">
+                </div>
+        </div>
+    
+        <div class="profile-details">
+            <button class="close-profile-btn">
+                <i class="material-symbols-outlined">close</i>
+            </button>
+        
+            <div class="profile-header">
+                <div class="avatar-wrapper">
+                    <img id="main-profile-pic" src="<%= (currentUser && currentUser.profile_pic) || '/default-profile.png' %>" class="avatar-img" alt="Profile Picture">
+                    <p class="username <% if (currentUser && currentUser.is_early_user) { %>early-user<% } %>">
+                        <% if (currentUser && currentUser.is_early_user) { %><span class="material-symbols-outlined" id="filled-icon">workspace_premium</span><% } %><%= currentUser && currentUser.display_name %></p>
+                </div>
+            </div>
+            
+            <div class="edit-profile">
+                <button id="edit-profile-button" title="Edit Profile">
+                <i class="material-symbols-outlined">edit</i>
+                </button>
+                <div class="edit-overlay" id="edit-overlay">
+                <form class="edit-content" id="edit-profile-form" enctype="multipart/form-data">
+                    <h3>Edit Profile</h3>
+                    <!-- Profile Picture Upload -->
+                    <div class="edit-picture">
+                    <img id="profile-preview" src="" alt="Profile Picture" />
+                    <label for="profile-picture-input" class="upload-btn">Change Photo</label>
+                    <input type="file" id="profile-picture-input" name="profile_pic" accept="image/*" />
+                    </div>
+                    <!-- Background Image Upload -->
+                    <div class="edit-picture">
+                    <img id="bg-preview" src="" alt="Background Image" />
+                    <label for="bg-image-input" class="upload-btn">Change Background</label>
+                    <input type="file" id="bg-image-input" name="bg_image" accept="image/*" />
+                    </div>
+                    <!-- Username -->
+                    <div class="display-name-container">
+                    <p>Display Name:</p>
+                    <input type="text" id="edit-display-name" name="display_name" placeholder="Display Name" maxlength="20" required />
+                    </div>
+                    <!-- Country -->
+                    <select id="edit-country" name="country">
+                    <option value="" disabled>Select Country</option>
+                    <option>India</option>
+                    <option>United States</option>
+                    <option>Japan</option>
+                    <option>United Kingdom</option>
+                    <option>Germany</option>
+                    </select>
+                    <!-- State -->
+                    <input type="text" id="edit-state" name="state" placeholder="State/Region" />
+                    <!-- Bio -->
+                    <textarea id="edit-bio" name="bio" placeholder="Write something about yourself..."></textarea>
+                    <div class="edit-actions">
+                    <button type="submit" class="save-btn">Save</button>
+                    <button type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                    <div id="edit-error" style="color:red"></div>
+                </form>
+                </div>
+            </div>
+            
+        </div>
+        
+
+        <div class="main-body">
+            <div class="top-section" id="main-bg-image"style="background-image: url('<%= currentUser && currentUser.bg_image ? currentUser.bg_image : '/default-bg.jpg' %>');">
+
+            <div class="top-section-statistics">
+
+                <section class="section-1">
+                    <div class="mean-score">
+                        <p class="score-text">Mean Score</p>
+                        <p class="score"></p>
+                    </div>
+
+                    <div class="titles-watched">
+                        <p class="titles-watched-text">Titles Watched</p>
+                        <p class="title-count"></p>
+                    </div>
+                </section>
+                
+                <section class="section-2">
+
+                    <div class="stat-1">
+                        <div class="total-completed">
+                            <p class="text">Completed</p>
+                            <p class="completed-count"></p>
+                        </div>
+                        <div class="total-episodes">
+                            <p class="text">Episodes</p>
+                            <p class="episode-count"></p>
+                        </div>
+                        <div class="total-days">
+                            <p class="text">Days</p>
+                            <p class="day-count"></p>
+                        </div>
+                        <div class="total-hours">
+                            <p class="text">Hours</p>
+                            <p class="hour-count"></p>
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+        
+                <nav class="details-navigation">
+                    <ul class="details-navigation-ul">
+                        <li class="details-navigation-ul-li active" data-target="Overview-content" >Overview</li>
+                        <li class="details-navigation-ul-li" data-target="Anime-list-content">Anime List</li>
+                        <li class="details-navigation-ul-li" data-target="Top-Tracks-content">Top Tracks</li>
+                        <li class="details-navigation-ul-li" data-target="Statistics-content">Statistics</li>
+                        <li class="details-navigation-ul-li" data-target="Contribution-content">Contribution</li>
+                    </ul>
+                </nav>
+
+            </div>
+
+            <div class="bottom-section">
+
+             <section id="overview-section" class="tab-content active">
+                 <% const ov = locals.overview || null; %>
+                 <% if (!ov) { %>
+                     <div class="overview-note">
+                         Your overview could not be loaded just now. Refresh the page to try again.
+                     </div>
+                 <% } else if (ov.isEmpty) { %>
+                     <div class="overview-empty">
+                         <h2>Nothing logged yet</h2>
+                         <p class="muted">Add a few shows and this page fills in — what you are watching,
+                            how far you got, and how long it has all taken.</p>
+                         <a class="btn btn-primary" href="/browse?category=all">Browse anime</a>
+                     </div>
+                 <% } else { %>
+                     <h2>At a glance</h2>
+                     <div class="overview-stats">
+                         <div class="ov-stat">
+                             <b><%= ov.total %></b><span>entries</span>
+                         </div>
+                         <div class="ov-stat">
+                             <b><%= ov.episodes %></b><span>episodes</span>
+                         </div>
+                         <div class="ov-stat">
+                             <b><%= ov.watchTime %></b><span>time watched</span>
+                         </div>
+                         <div class="ov-stat">
+                             <b><%= ov.meanScore || '—' %></b>
+                             <span>mean score<% if (ov.scored) { %> &middot; <%= ov.scored %> rated<% } %></span>
+                         </div>
+                     </div>
+
+                     <h2>By status</h2>
+                     <div class="overview-status">
+                         <% ov.byStatus.forEach(function (row) { %>
+                             <div class="ov-status">
+                                 <span class="ov-status-label"><%= row.label %></span>
+                                 <span class="ov-status-bar"><i style="width: <%= row.percent %>%"></i></span>
+                                 <span class="ov-status-count"><%= row.count %></span>
+                             </div>
+                         <% }); %>
+                     </div>
+
+                     <% if (ov.recent.length) { %>
+                         <h2>Recently updated</h2>
+                         <div class="overview-recent">
+                             <% ov.recent.forEach(function (item) { %>
+                                 <a class="ov-recent" href="/anime/<%= item.malId %>">
+                                     <% if (item.poster) { %>
+                                         <img src="<%= item.poster %>" alt="" loading="lazy">
+                                     <% } else { %>
+                                         <span class="ov-recent-noimg"></span>
+                                     <% } %>
+                                     <span class="ov-recent-title"><%= item.title %></span>
+                                     <span class="ov-recent-meta">
+                                         <%= item.statusLabel %><% if (item.episodes) { %> &middot; ep <%= item.episodes %><% } %><% if (item.score) { %> &middot; &#9733; <%= item.score %><% } %>
+                                     </span>
+                                 </a>
+                             <% }); %>
+                         </div>
+                     <% } %>
+                 <% } %>
+             </section>
+
+             <!--Anime list-->
+             <section id="anime-list-section" class="tab-content">
+                 <div class="anime-list-container">
+                     <h2>Your Anime List</h2>
+                     <div id="user-anime-table-container">
+                         <p>Loading your anime list...</p>
+                     </div>
+                 </div>
+             </section>
+
+             <!--Top Tracks-->
+             <section id="top-tracks-section" class="tab-content">
+                    <div class="top-tracks-container">
+                        <h2>Add a Favorite Anime Track</h2>
+                        <div class="add-track-form">
+                            <input type="text" id="song-title-input" placeholder="Song Title" required>
+                            <input type="text" id="artist-input" placeholder="Artist (optional)">                        
+                            <div class="anime-search-container"> <!-- New container for search input and dropdown -->
+                                <input type="text" id="anime-title-input" placeholder="Anime Title (optional)">
+                                <input type="hidden" id="anime-id-hidden"> <!-- To store the selected anime_id -->
+                                <div id="anime-title-suggestions" class="autocomplete-dropdown"></div>
+                            </div>
+                            <select id="theme-type-select">
+                                <option value="OP">Opening</option>
+                                <option value="ED">Ending</option>
+                                <option value="Insert Song">Song</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <input type="number" id="theme-number-input" placeholder="Number (e.g., 1 for OP1)" min="1">
+                            <input type="url" id="song-url-input" placeholder="Link to song (YouTube/Spotify)">
+                            <button id="add-custom-theme-btn">Add Track</button>
+
+                        </div>
+
+                        <div id="track-message" class="message">
+
+                        </div>
+                        <div id="track-error-message" class="error-message"></div>
+
+                        <h2>Your Top Tracks</h2>
+                        <div id="favorite-tracks-list" class="grid-container">
+                            <!-- Favorite tracks will be loaded here -->
+                            <p>Loading your favorite tracks...</p>
+                        </div>
+                    </div>
+                </section>
+
+
+             <section id="statistics-section" class="tab-content">                 
+                <h2>Your Anime Statistics</h2>
+                 <div class="stats-grid">
+                     <div class="chart-container">
+                         <h3>Anime Status Distribution</h3>
+                         <div class="chart-box"><canvas id="statusChart"></canvas></div>
+                     </div>
+                     <div class="ranking-container">
+                         <h3>Watch Hour Leaderboard</h3>
+                         <table id="watchHourRankTable"></table>
+                         <div id="watchHourLeaderboard">
+                          <table id="watchHourRankTable"></table>
+                          <button id="showAllRanksBtn">Show All</button>
+                        </div>
+                        <div id="allRanksOverlay" style="display:none;">
+                          <div class="overlay-content">
+                            <button id="closeAllRanksOverlay">Close</button>
+                            <table id="allRanksTable"></table>
+                          </div>
+                        </div>
+                     </div>
+                 </div>
+             </section>
+
+             <section id="contribution-section" class="tab-content">                 
+                 <h3>Anime Recommendations You've Made</h3>
+                 <div id="user-recommendations-list" class="grid-container">
+                     <!-- User's recommendations will be loaded here -->
+                     <p>Loading your recommendations...</p>
+                 </div>
+             </section>
+            </div>
+
+        </div>
+        
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/cards.js" defer></script>
+    <script src="/js/profile.js" defer></script>
+    <%- include('partials/footer') %>
+    <script src="/js/promos.js" defer></script>
+</body>
+</html>

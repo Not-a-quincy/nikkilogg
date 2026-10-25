@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikkilog — Track what you watch, mindfully</title>
+    <%- include('partials/meta', { metaTitle: "Nikkilog — Track what you watch, mindfully", metaDescription: "A quiet, clutter-free home for your anime diary — log episodes, rate what you watch, and discover the seasonal zeitgeist.", }) %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <script>window.isLoggedIn = <%= isLoggedIn ? 'true' : 'false' %>;</script>
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+
+    <%- include('partials/topbar', { active: 'discover' }) %>
+
+    <main>
+        <!-- ===================== Hero ===================== -->
+        <div class="ambient" aria-hidden="true"></div>
+
+        <section class="hero">
+            <div class="hero-pill" id="heroPill" hidden>
+                <span class="pulse-dot"></span>
+                <span class="label-sm" id="heroPillText"></span>
+            </div>
+
+            <h1 class="hero-title">
+                Track what you watch. <span class="hero-accent">Mindfully.</span>
+            </h1>
+            <p class="hero-sub">
+                Savor every narrative arc. A quiet, clutter-free haven to log episodes,
+                note tender reflections, and discover the seasonal zeitgeist.
+            </p>
+
+            <div class="omnisearch">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" id="heroSearch" placeholder="Search series, genres, or a quiet mood..." autocomplete="off" aria-label="Search anime">
+                <button class="btn btn-primary" id="heroExplore">Explore</button>
+                <div class="search-dropdown" id="heroSearchResults"></div>
+            </div>
+
+            <div class="chips">
+                <a class="chip" href="/browse?status=Currently Airing"><span class="material-symbols-outlined">auto_awesome</span> Currently Airing</a>
+                <a class="chip" href="/browse?season=spring"><span class="material-symbols-outlined">local_florist</span> This Season</a>
+                <a class="chip" href="/browse?order_by=average_rating"><span class="material-symbols-outlined">star</span> Top Rated Masterpieces</a>
+                <a class="chip chip-accent" href="/profile"><span class="material-symbols-outlined">auto_awesome</span> Personalized Pick</a>
+            </div>
+        </section>
+
+        <!-- ===================== Currently Watching ===================== -->
+        <section class="section" id="watchingSection" hidden>
+            <div class="section-head">
+                <div class="section-head-left">
+                    <span class="dot dot-primary"></span>
+                    <h2 class="headline-md">Currently Watching</h2>
+                    <span class="count-badge" id="watchingCount">0 active</span>
+                </div>
+                <a class="link-arrow" href="/profile">Full Library <span class="material-symbols-outlined">arrow_forward</span></a>
+            </div>
+            <div class="watch-grid" id="watchingGrid"></div>
+        </section>
+
+        <!-- ===================== Seasonal Trends ===================== -->
+        <section class="section" id="seasonalSection" hidden>
+            <div class="section-head section-head-wrap">
+                <div>
+                    <span class="eyebrow">Airing Calendar</span>
+                    <h2 class="headline-lg" id="seasonalTitle">Seasonal Trends</h2>
+                </div>
+                <div class="segmented" id="seasonalTabs">
+                    <button class="seg-btn active" data-order="members">Most Popular</button>
+                    <button class="seg-btn" data-order="average_rating">Top Rated</button>
+                    <button class="seg-btn" data-order="anime_rank">Highest Ranked</button>
+                </div>
+            </div>
+            <div class="season-grid" id="seasonalGrid"></div>
+        </section>
+
+
+        <!-- ===================== Events & Partners (filled by promos.js) ===================== -->
+        <section class="section" id="eventsSection" hidden>
+            <div class="section-head">
+                <div class="section-head-left">
+                    <span class="dot" style="background: var(--secondary);"></span>
+                    <h2 class="headline-lg">Events &amp; Partners</h2>
+                </div>
+                <a class="link-arrow" href="/events">All events <span class="material-symbols-outlined">arrow_forward</span></a>
+            </div>
+            <div class="events-grid" id="eventsGrid"></div>
+        </section>
+
+        <!-- ===================== Insights (logged in only) ===================== -->
+        <section class="section" id="insightsSection" hidden>
+            <div class="insights-grid">
+                <div class="habit-card">
+                    <div class="habit-head">
+                        <div>
+                            <span class="eyebrow">Your Reflection</span>
+                            <h3 class="headline-md">Watching Habits</h3>
+                        </div>
+                        <span class="streak-badge" id="insightStreak" hidden>
+                            <span class="material-symbols-outlined">local_fire_department</span>
+                            <span id="insightStreakText"></span>
+                        </span>
+                    </div>
+
+                    <div class="habit-total">
+                        <span class="headline-lg" id="insightHours">0</span>
+                        <span class="body-md muted">hours watched</span>
+                    </div>
+                    <div class="habit-sub">
+                        <span class="label-sm muted" id="insightEpisodes"></span>
+                        <span class="label-sm accent" id="insightScore"></span>
+                    </div>
+
+                    <div class="chart" id="insightChart"></div>
+                    <div class="chart-labels" id="insightChartLabels"></div>
+
+                    <div class="genres">
+                        <span class="eyebrow">Dominant Genre</span>
+                        <div class="genre-chips" id="insightGenres"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/cards.js" defer></script>
+    <script src="/js/index.js" defer></script>
+    <script src="/js/promos.js" defer></script>
+</body>
+</html>

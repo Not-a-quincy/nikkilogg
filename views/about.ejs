@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Nikkilog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <%- include('partials/meta', { metaTitle: 'About Nikkilog — what this is and why it exists', metaDescription: 'Nikkilog is a personal, non-commercial anime diary. What it is, why it exists, where the data comes from, and what it is not.' }) %>
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+    <%- include('partials/topbar', { active: '' }) %>
+
+    <main class="content-area">
+        <article class="content-inner prose">
+            <header class="page-head">
+                <span class="eyebrow">About</span>
+                <h1 class="headline-lg">What this is, and why it exists</h1>
+            </header>
+
+            <p class="prose-lead">
+                Nikkilog is a <strong>personal anime diary</strong> — a quiet place to keep a record of
+                what you watch, rate it, and note how it made you feel. It is run by one person, as a
+                hobby, and it is not a business.
+            </p>
+
+            <h2>Why it exists</h2>
+            <p>
+                Three honest reasons, in the order they became true.
+            </p>
+            <p>
+                <strong>It replaced a spreadsheet.</strong> Keeping track of what you have watched, how
+                far in you are, and what you thought of it, in a spreadsheet, stops working somewhere
+                around the hundredth entry. This is that spreadsheet, with a proper interface.
+            </p>
+            <p>
+                <strong>It is a learning project.</strong> Nikkilog was built to learn full-stack web
+                development from scratch — the database, the server, the authentication, the design. It
+                is now being deployed publicly to learn how search engines and the open web actually
+                work, which is a different skill entirely and cannot be learned on localhost.
+            </p>
+            <p>
+                <strong>It asks a question other trackers do not.</strong> Most trackers record
+                <em>what</em> you watched. Nikkilog also records <em>how it felt</em> — calm, thrilling,
+                emotional, nostalgic — and turns those answers into
+                <a href="/mood/calm">browsable lists</a>. That data does not exist anywhere else,
+                because no one else asked for it.
+            </p>
+
+            <h2>What this is not</h2>
+            <ul>
+                <li><strong>Not a company.</strong> No ads, no paid tiers, no investors, no data sales.</li>
+                <li><strong>Not affiliated with MyAnimeList</strong>, or with any anime studio, publisher or streaming service. Nothing here is endorsed by anyone.</li>
+                <li><strong>Not a community site.</strong> There are no forums and no follower counts. It is one person's diary with a public face.</li>
+                <li><strong>Not a streaming service.</strong> Nikkilog does not host, stream or link to video. It records what you already watched.</li>
+            </ul>
+
+            <h2 id="data">Where the data comes from</h2>
+            <p>
+                Being straight about this, because it matters.
+            </p>
+            <p>
+                <strong>The catalogue is MyAnimeList's.</strong> Anime titles, alternative and Japanese
+                titles, synopses, episode counts, air dates, studios, genres, scores and cover images all
+                originate from <a href="https://myanimelist.net/" rel="noopener">MyAnimeList</a>. They
+                remain the property of MyAnimeList and the respective rights holders. Nikkilog claims no
+                ownership over any of it and does not sell it.
+            </p>
+            <p>
+                <strong>Crediting them is not the same as being licensed by them.</strong> Saying where
+                the data came from is the honest thing to do, and it is the one use of MyAnimeList's name
+                their own developer agreement permits. It does not, by itself, grant permission to
+                republish their content — that is a separate question, and this project does not claim to
+                have resolved it.
+            </p>
+            <p>
+                <strong>If you hold rights to something shown here and want it removed, it will be</strong> —
+                no argument, no form to fill in. See <a href="#contact">contact</a> below.
+            </p>
+            <p>
+                <strong>The mood data is ours.</strong> The answers to "how did this feel?" were given by
+                people using Nikkilog. They were not copied from anywhere, because there is nowhere to
+                copy them from. That is the part of this site that is genuinely original.
+            </p>
+
+            <h2>How it is built</h2>
+            <p>
+                Node.js, Express, EJS and MySQL, rendered on the server. The source is on GitHub and the
+                design, the browser extension and the mood layer are all described in the repository.
+                No trackers, no analytics scripts, no third-party fonts beyond Google Fonts.
+            </p>
+
+            <h2 id="contact">Contact</h2>
+            <% if (contact) { %>
+            <p>
+                For anything at all — a correction, a removal request, a bug, or just to say hello:
+                <a href="<%= contact.url %>" rel="me noopener" target="_blank"><%= contact.display %></a> on <%= contact.network %>.
+                A direct message is the fastest way to reach me.
+            </p>
+            <% } else { %>
+            <p class="muted">
+                No contact details have been configured for this instance yet.
+            </p>
+            <% } %>
+            <p class="muted">
+                This page is not legal advice and makes no legal claim. It is a plain description of
+                what this project is, written so that anyone can see exactly what they are looking at.
+            </p>
+        </article>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/promos.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime | Nikkilog</title>
+    <%- include('partials/meta', { }) %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Noto+Sans+JP:wght@400;500;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/anime.css">
+</head>
+<body class="main-body">
+
+    <%- include('partials/announcement') %>
+
+    <%- include('partials/topbar', { active: 'browse' }) %>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay-container" id="searchOverlay">
+        <div class="search">
+            <input type="search" placeholder="Search anime..." data-search id="searchInput" aria-label="Search anime">
+        </div>
+        <div class="search-results" id="searchResults">
+            <!-- Dynamic search results go here -->
+        </div>
+    </div>
+
+    <!-- Delete Comment Modal -->
+    <div id="delete-confirm-modal" class="modal-overlay">
+        <div class="modal-box">
+          <p>Are you sure you want to delete this comment?</p>
+          <div class="modal-actions">
+            <button id="cancel-delete-btn">Cancel</button>
+            <button id="confirm-delete-btn">Yes, delete</button>
+          </div>
+        </div>
+    </div>
+
+    <!-- Report Comment Modal -->
+    <div id="report-modal" class="modal-overlay">
+        <div class="modal-box">
+        <h3>Report Comment</h3>
+        <form id="report-form">
+            <input type="hidden" id="report-comment-id">
+        
+            <label><input type="radio" name="reason" value="Spam" required> Spam</label><br>
+            <label><input type="radio" name="reason" value="Harassment"> Harassment or bullying</label><br>
+            <label><input type="radio" name="reason" value="Hate Speech"> Hate speech</label><br>
+            <label><input type="radio" name="reason" value="Off-topic"> Off-topic / Not relevant</label><br>
+            <label><input type="radio" name="reason" value="Other"> Other</label><br>
+        
+            <textarea id="report-description" placeholder="Additional info (optional)" rows="3"></textarea>
+        
+            <div class="modal-actions">
+            <button type="button" id="cancel-report-btn">Cancel</button>
+            <button type="submit" id="submit-report-btn">Submit</button>
+            </div>
+        </form>
+        </div>
+    </div>
+
+
+    <!--Add Review Overlay-->
+    <div class="add-review-overlay">
+        <h2>Create Your Review</h2>
+
+        <form id="reviewPostForm" class="overlay-content">
+          <div class="form-group">
+            <label for="reviewTitle" class="sr-only">Title</label>
+            <textarea id="reviewTitle" name="reviewTitle" placeholder="Title" required maxlength="100" rows="1"></textarea>
+            <small class="title-char-count" style="font-size: small;"><span>100</span>/100</small>
+          </div>
+      
+          <div class="form-group">
+            <label for="reviewContent" class="sr-only">Body</label>
+            <textarea id="reviewContent" name="reviewContent" rows="8" placeholder="Share your detailed thoughts here..." required minlength="20"></textarea>
+          </div>
+      
+          <div class="form-actions">
+            <button type="submit" class="submit-review-btn">Post Review</button>
+          </div>
+        </form>
+        <div class="form-group">
+            <label>Final Verdict:</label>
+            <div class="verdict-options">
+              <label><input type="radio" name="verdict" value="recommended" required> Recommended</label>
+              <label><input type="radio" name="verdict" value="mixed"> Mixed Feelings</label>
+              <label><input type="radio" name="verdict" value="not_recommended"> Not Recommended</label>
+            </div>
+        </div>
+        <div class="instructions">
+          <p>Be respectful and constructive. Spoilers should be properly marked.</p>
+        </div>
+    
+        <button class="close-button"><i class="material-symbols-outlined">close</i></button>
+    </div>
+    <div class="comment-overlay-backdrop"></div>
+
+    <!-- Character overlay -->
+    <div id="character-overlay" class="character-overlay">
+        <div class="language-container">
+            <button class="switch-similar-character"><i class="material-symbols-outlined">match_word</i></button>
+            <ul class="language-container-ul">
+
+            </ul>
+        </div>
+
+
+        <div class="details">
+
+            <h2 class="character-name"></h2>
+            <button id="close-overlay-button"><i class="material-symbols-outlined">close</i></button>
+            <div class="overlay-content">
+
+                <div class="character-image-and-detail">
+                    <div class="character-image-container">
+                        <img class="character-image">
+                    </div>
+                    <div class="character-detail-container">
+                        <div class="alternate-name-container">
+                            <p class="kanji-katakana"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="character-about-container">
+
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+
+
+    <main class="content-area">
+
+        <!-- ===================== Hero ===================== -->
+        <section class="detail-hero">
+            <div class="hero-banner" id="heroBanner">
+                <span class="hero-badge" id="heroBadge" hidden>
+                    <span class="material-symbols-outlined">check_circle</span>
+                    <span id="heroBadgeText"></span>
+                </span>
+            </div>
+
+            <div class="hero-card">
+                <div class="hero-poster">
+                    <img class="main-top-anime-image" src="<%= locals.anime && locals.anime.poster_image_url ? locals.anime.poster_image_url : '' %>" alt="<%= locals.anime ? locals.anime.name : 'Anime poster' %>">
+                </div>
+
+                <div class="hero-body">
+                    <div class="hero-meta">
+                        <span class="title-japanese-text"><%= locals.anime && locals.anime.title_jp ? locals.anime.title_jp : '' %></span>
+                        <span class="sep">•</span>
+                        <span id="heroStudio"></span>
+                        <span class="sep">•</span>
+                        <span class="season-info"><a href="#"><span class="season-text"></span></a></span>
+                    </div>
+
+                    <h1 class="title-text"><%= locals.anime ? locals.anime.name : '' %></h1>
+                    <p class="hero-excerpt" id="heroExcerpt"><%= locals.anime ? locals.anime.excerpt : '' %></p>
+
+                    <div class="genre hero-genres"><% if (locals.anime && locals.anime.genres) { %><% locals.anime.genres.forEach(function (g) { %><span class="genre-tag"><%= g %></span><% }); %><% } %></div>
+                    <div class="theme hero-themes"><!--Filled in js--></div>
+
+                    <div class="hero-stats">
+                        <div class="rating stat-chip">
+                            <p class="stat-label">Community score</p>
+                            <p class="rating-score"></p>
+                        </div>
+                        <div class="popularity stat-chip">
+                            <p class="stat-label">Popularity</p>
+                            <p class="popularity-hash"></p>
+                        </div>
+                        <div class="members stat-chip">
+                            <p class="stat-label">Members</p>
+                            <p class="members-count"></p>
+                        </div>
+                        <span class="anime-type"><%= locals.anime && locals.anime.anime_type ? locals.anime.anime_type : '' %></span>
+                    </div>
+
+                    <div class="hero-sub">
+                        <p class="main-top-anime-year"><%= locals.anime && locals.anime.anime_year ? locals.anime.anime_year : '' %></p>
+                        <span class="sep">•</span>
+                        <p class="main-top-anime-duration"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <nav class="details-navigation">
+                <ul class="details-navigation-ul">
+                    <li class="details-navigation-ul-li active" data-target="overview-content">Overview</li>
+                    <li class="details-navigation-ul-li" data-target="character-content">Characters</li>
+                    <li class="details-navigation-ul-li" data-target="staff-content">Staff</li>
+                </ul>
+                <% if (currentUser) { %>
+                <button id="recommend-btn">Recommend</button>
+                <% } %>
+            </nav>
+            <div id="recommend-section" style="display:none; margin-top:1em;">
+                <button id="close-recommend-section" style="float:right; background:none; border:none; font-size:1.5em; cursor:pointer;">&times;</button>
+                <p>If you liked <span id="current-anime-title"></span>, you'll love:</p>
+                <div class="recommend-search-div">
+                    <input type="text" id="recommend-search" placeholder="Search for anime to recommend..." autocomplete="off" />
+                </div>
+                <div id="recommend-search-results"></div>
+            </div>
+
+        <div class="bottom-section">
+
+        <div class="detail-layout">
+        <div class="detail-main">
+            <button id="toggle-stats-btn" class="show-stats-btn">
+              <i class="material-symbols-outlined">bar_chart</i> Show Stats
+            </button>
+
+            <!-- Overview Section -->
+            <section id="overview-content" class="tab-content active">
+                <div class="overview-top-section">
+                     <div class="overview-left">
+                
+                    <!-- Synopsis -->
+                    <!-- How it felt — the only content on this page that exists nowhere else -->
+                    <div class="card mood-vote" id="moodVote" data-anime-id="<%= animeId %>">
+                        <h3 class="side-title">How did this feel?</h3>
+                        <p class="muted" style="font-size:0.82rem;">Pick up to four. This is what makes the <a href="/mood/calm">by-mood</a> lists possible.</p>
+                        <div class="mood-vote-options" id="moodOptions"></div>
+                        <p class="mood-count" id="moodCount">Up to 4 — tap to add, tap again to remove</p>
+                        <div class="mood-aggregate" id="moodAggregate"><p class="side-empty">Loading what viewers felt…</p></div>
+                    </div>
+
+                    <div class="synopsis">
+                        <h2>Synopsis</h2>
+                        <p><%= locals.anime ? locals.anime.synopsisText : '' %></p>
+                    </div>
+                
+                    <!-- Tracking & Watch Order -->
+                    <div class="track-watch-order" data-anime-id="<%= animeId %>" aria-label="Anime Tracking">
+                        <% if (currentUser) { %>
+                        <div class="track">
+                        
+                            <!-- Watching Status Buttons -->
+                            <div class="button-section" role="group" aria-label="Set Watching Status">
+                                <button type="button" class="status-button" data-status="watching">Watching</button>
+                                <button type="button" class="status-button" data-status="completed">Completed</button>
+                                <button type="button" class="status-button" data-status="plan-to-watch">Plan to Watch</button>
+                                <button type="button" class="status-button" data-status="on-hold">On-hold</button>
+                                <button type="button" class="status-button" data-status="dropped">Dropped</button>
+                            </div>
+                        
+                            <!-- Episode Tracking, Score, Mood -->
+                            <div class="input-section" aria-label="Episode Tracking">
+                                <label class="ep-update" for="ep-input">
+                                    <span>Episodes Watched</span>
+                                    <div class="ep-controls">
+                                        <button type="button" class="ep-button" id="ep-minus" aria-label="Decrease Episode">-</button>
+                                        <input type="number" id="ep-input" min="0" value="0" aria-label="Episodes Watched">
+                                        <span id="ep-max-label"></span>
+                                        <button type="button" class="ep-button" id="ep-plus" aria-label="Increase Episode">+</button>
+                                    </div>
+                                </label>
+                                <div class="score" aria-label="Rate this Anime">
+                                    <label for="score-input">Score</label>
+                                    <input id="score-input" type="text" inputmode="decimal" step="0.1" min="0" max="10" placeholder="Eg:8.5"/>
+                                </div>
+                                <div class="mood" aria-label="Set Anime Mood">
+                                    <label for="mood-select">Vibe</label>
+                                    <select id="mood-select">
+                                        <option value="">Select</option>
+                                        <option value="happy">Happy and Positive</option>
+                                        <option value="calm">Relaxing and Peaceful</option>
+                                        <option value="thrilling">Thrilling</option>
+                                        <option value="emotional">Emotional and Touching</option>
+                                        <option value="thoughtful">Deep and Thoughtful</option>
+                                        <option value="funny">Funny and Lighthearted</option>
+                                        <option value="mystery">Mysterious and Suspenseful</option>
+                                        <option value="inspiring">Inspiring</option>
+                                        <option value="dark">Dark and Serious</option>
+                                        <option value="adventure">Adventurous and Fun</option>
+                                        <option value="romantic">Romantic and Sweet</option>
+                                        <option value="magical">Magical and Whimsical</option>
+                                        <option value="nostalgic">Nostalgic</option>
+                                        <option value="intense">Intense</option>
+                                        <option value="slice_of_life">Everyday Life</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Every save reports back here: silence was the bug. -->
+                            <p class="track-status" id="trackStatus" role="status" aria-live="polite"></p>
+                        </div>
+                        <% } %>
+                    </div>
+                
+                    <!-- Watch Order / Relations -->
+                    <div class="watch-order">
+                        <h3>Relations</h3>
+                        <div class="relations">
+                            <!-- Filled in js -->
+                        </div>
+                    </div>
+                
+                    <!-- Recommendations -->
+                    <div id="recommendations-below-relations">
+                        <h3>Recommendations</h3>
+                        <div id="recommendations-list"></div>
+                    </div>
+
+                </div>
+
+                 <!-- Statistics Section -->
+                <div id="statistics-content">
+                    <div class="stats-info-text">
+                        <p>Mean:<span class="meanSpan"></span></p>
+                        <p>Standard Deviation:<span class="stddevSpan"></span></p>
+                    </div>
+                    <div class="graphs">
+                        <div class="scatter-chart">
+                            <h4 class="chart-title">Score Distribution</h4>
+                            <div class="chart-box"><canvas id="status_chart"></canvas></div>
+                        </div>
+                        <div class="doughnut-chart">
+                            <h4 class="chart-title">User Status</h4>
+                            <div class="chart-box"><canvas id="status_doughnut"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+                
+                    
+                
+                </div><!-- /.overview-left -->
+            
+               <!-- Reviews Section -->
+                    <div id="reviews-section">
+                        <div class="reviews-header">
+                            <div class="header-and-view-all">
+                                <h2>Reviews</h2>
+                                <button class="expand-reviews-btn">
+                                    <i class="material-symbols-outlined">chevron_right</i>
+                                </button>
+                            </div>
+                            <button class="add-review-btn">
+                                <i class="material-symbols-outlined">add</i> Add review
+                            </button>
+                        </div>
+                        <div class="review-summary">
+                            <!-- Filled dynamically -->
+                        </div>
+                        <div class="reviews-scroll-container">
+                            <button id="scroll-btn-left" class="scroll-btn">
+                                <i class="material-symbols-outlined">arrow_back_ios_new</i>
+                            </button>
+                            <div class="comment-list">
+                                <!-- Filled in JS -->
+                            </div>
+                            <button id="scroll-btn-right" class="scroll-btn">
+                                <i class="material-symbols-outlined">arrow_forward_ios</i>
+                            </button>
+                        </div>
+                    </div>
+            
+            </section>
+        
+            <!-- Characters Section -->
+            <section id="character-section" class="tab-content">
+                <p>Characters And Voice Actors</p>
+                <div class="charContainer"></div>
+            </section>
+        
+            <!-- Staff Section -->
+            <section id="staff-content" class="tab-content">
+                <p>Production Staff</p>
+                <div class="staffContainer" id="staffContainer">
+                    <p class="muted">Loading staff…</p>
+                </div>
+            </section>
+        
+            </div><!-- /.detail-main -->
+
+            <aside class="detail-side">
+                <div class="side-card">
+                    <h3 class="side-title">Information Matrix</h3>
+                    <div class="main-details info-matrix">
+                        <p class="side-empty">Loading details…</p>
+                    </div>
+                </div>
+
+                <div class="side-card" id="scoreCard" hidden>
+                    <h3 class="side-title">Score Distribution</h3>
+                    <div class="score-bars" id="scoreBars"></div>
+                </div>
+
+                <div class="side-card" id="engageCard" hidden>
+                    <h3 class="side-title">Viewer Engagement</h3>
+                    <div class="engage-chips" id="engageChips"></div>
+                </div>
+            </aside>
+        </div><!-- /.detail-layout -->
+        </div><!-- /.bottom-section -->
+
+           
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script id="context-data" type="application/json">
+        {
+          "anime_id": <%= animeId %>,
+          "user_id": <%= (userId === null || userId === undefined) ? 'null' : userId %>,
+          "is_admin": <%= (currentUser && currentUser.is_admin) ? 'true' : 'false' %>
+        }
+    </script>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/mood.js" defer></script>
+    <script src="/js/anime.js" defer></script>
+    <%- include('partials/footer') %>
+    <script src="/js/promos.js" defer></script>
+</body>
+</html>

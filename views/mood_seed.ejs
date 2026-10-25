@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log moods — Nikkilog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/tokens.css">
+    <%- include('partials/meta', { metaTitle: "Log moods — Nikkilog", metaNoIndex: true }) %>
+</head>
+<body>
+
+    <%- include('partials/announcement') %>
+    <%- include('partials/topbar', { active: 'list' }) %>
+
+    <main class="content-area">
+        <div class="content-inner seed-wrap">
+            <header class="page-head">
+                <span class="eyebrow">Two minutes, one tap each</span>
+                <h1 class="headline-lg">How did these feel?</h1>
+                <p class="muted">
+                    Every answer becomes part of the <a href="/mood/calm">by-mood</a> lists —
+                    the one thing on this site nobody else has. Logged so far:
+                    <strong id="seedCount">0</strong>.
+                </p>
+            </header>
+
+            <div id="seedCard"><p class="muted">Loading your list…</p></div>
+            <p class="muted seed-hint">Tip: press <kbd>1</kbd>–<kbd>9</kbd> to pick, <kbd>s</kbd> to skip.</p>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/topbar.js" defer></script>
+    <script src="/js/promos.js" defer></script>
+    <script src="/js/seed.js" defer></script>
+</body>
+</html>
